@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -8,12 +8,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MomentModule } from 'ngx-moment';
 import { AgGridModule } from 'ag-grid-angular';
 
+import * as Hammer from 'hammerjs';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+export class MyHammerConfig extends HammerGestureConfig {
+	overrides = <any>{
+		pan: { direction: Hammer.DIRECTION_ALL },
+		swipe: { velocity: 0.4, threshold: 20 } // override default settings
+	};
+}
 
 @NgModule({
 	declarations: [AppComponent],
@@ -27,7 +35,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 		ReactiveFormsModule,
 		MaterialModule
 	],
-	providers: [],
+	providers: [
+		{
+			provide: HAMMER_GESTURE_CONFIG,
+			useClass: MyHammerConfig
+		}
+	],
 	bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+	constructor() {
+		library.add(fas, far);
+	}
+}
