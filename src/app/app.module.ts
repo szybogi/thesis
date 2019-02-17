@@ -15,6 +15,7 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HelloComponent } from './component/hello/hello.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -24,7 +25,7 @@ export class MyHammerConfig extends HammerGestureConfig {
 }
 
 @NgModule({
-	declarations: [AppComponent],
+	declarations: [AppComponent, HelloComponent],
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
