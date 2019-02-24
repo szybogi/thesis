@@ -1,4 +1,7 @@
+import { TransactionService } from './service/transaction.service';
 import { Component } from '@angular/core';
+import { Transaction } from './model/transaction.class';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-root',
@@ -7,4 +10,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 	title = 'thesis';
+	constructor(public transactionService: TransactionService) {}
 }
