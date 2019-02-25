@@ -1,9 +1,11 @@
-<div>
-	{{ transaction.name }}
-</div>
-<div>
-	{{ transaction.date | amDateFormat: 'YYYY.MM.DD.' }}
-</div>
-<div>
-	{{ transaction.amount }}
+<div id="row">
+	<div class="name">
+		{{ transaction.name }}
+	</div>
+	<div class="date">
+		{{ transaction.date | amDateFormat: 'YYYY.MM.DD.' }}
+	</div>
+	<div class="amount">
+		{{ transaction.amount }}
+	</div>
 </div>

@@ -2,3 +2,5 @@
 <button [routerLink]="['']">Home</button>
 <button [routerLink]="['hello']">Hello</button>
 <router-outlet></router-outlet>
+<app-transaction #alma [transaction]="transactionService.transactions[0]"> </app-transaction>
+<app-transaction [transaction]="alma.transaction"> </app-transaction>
