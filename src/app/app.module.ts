@@ -19,6 +19,8 @@ import { HelloComponent } from './component/hello/hello.component';
 import { TransactionComponent } from './component/transaction/transaction.component';
 import { ListComponent } from './component/list/list.component';
 import { ListPageComponent } from './component/page/list-page/list-page.component';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import localeHu from '@angular/common/locales/hu';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -26,10 +28,11 @@ export class MyHammerConfig extends HammerGestureConfig {
 		swipe: { velocity: 0.4, threshold: 20 } // override default settings
 	};
 }
-
+registerLocaleData(localeHu, 'hu');
 @NgModule({
 	declarations: [AppComponent, HelloComponent, TransactionComponent, ListComponent, ListPageComponent],
 	imports: [
+		CommonModule,
 		BrowserModule,
 		BrowserAnimationsModule,
 		AgGridModule,
