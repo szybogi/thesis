@@ -17,6 +17,7 @@ import { MaterialModule } from './module/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HelloComponent } from './component/hello/hello.component';
 import { TransactionComponent } from './component/transaction/transaction.component';
+import { ListComponent } from './component/list/list.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -26,7 +27,7 @@ export class MyHammerConfig extends HammerGestureConfig {
 }
 
 @NgModule({
-	declarations: [AppComponent, HelloComponent, TransactionComponent],
+	declarations: [AppComponent, HelloComponent, TransactionComponent, ListComponent],
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,

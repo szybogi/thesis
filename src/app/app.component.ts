@@ -10,5 +10,5 @@ import * as moment from 'moment';
 })
 export class AppComponent {
 	title = 'thesis';
-	constructor(public transactionService: TransactionService) {}
+	constructor() {}
 }

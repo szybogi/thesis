@@ -1,23 +1,22 @@
-#row {
+:host {
 	width: 100%;
-	height: 25px;
-	color: black;
+	height: 1.5em;
 	display: flex;
 	flex-direction: row;
-}
-.name {
-	padding: 5px;
-	border: 1px solid black;
-	width: 40%;
-}
-.date {
-	padding: 5px;
-	border: 1px solid black;
-	width: 30%;
-}
-.amount {
-	padding: 5px;
-	border: 1px solid black;
-	width: 30%;
-	text-align: right;
+
+	div {
+		padding: 5px;
+		border: 1px solid black;
+	}
+
+	.name {
+		width: 40%;
+	}
+	.date {
+		width: 30%;
+	}
+	.amount {
+		width: 30%;
+		text-align: right;
+	}
 }
