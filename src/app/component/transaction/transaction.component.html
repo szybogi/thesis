@@ -4,6 +4,12 @@
 <div class="date">
 	{{ transaction.date | amDateFormat: 'YYYY.MM.DD.' }}
 </div>
-<div class="amount">
+<div
+	class="amount"
+	[ngClass]="{
+		green: isPositive,
+		red: !isPositive
+	}"
+>
 	{{ transaction.amount }}
 </div>

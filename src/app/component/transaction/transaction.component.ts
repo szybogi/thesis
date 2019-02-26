@@ -9,7 +9,12 @@ import * as moment from 'moment';
 })
 export class TransactionComponent implements OnInit {
 	@Input() transaction: Transaction;
+
 	constructor() {}
+
+	get isPositive(): boolean {
+		return this.transaction.amount >= 0;
+	}
 
 	ngOnInit() {}
 }
