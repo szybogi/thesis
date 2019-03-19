@@ -38,6 +38,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgModule } from '@angular/core';
 
 const modules = [
+	MatIconModule,
 	MatButtonModule,
 	MatCheckboxModule,
 	MatFormFieldModule,

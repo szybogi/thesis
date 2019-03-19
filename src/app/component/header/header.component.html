@@ -1,0 +1,33 @@
+<mat-toolbar color="primary">
+	<span class="fill-remaining-space">
+		<button mat-icon-button [matMenuTriggerFor]="menu">
+			<mat-icon>menu</mat-icon>
+		</button>
+		<mat-menu #menu="matMenu" [overlapTrigger]="true">
+			<button mat-menu-item>
+				<mat-icon>settings</mat-icon>
+				<span>Beállítások</span>
+			</button>
+			<button mat-menu-item>
+				<mat-icon>exit_to_app</mat-icon>
+				<span>Kijelentkezés</span>
+			</button>
+		</mat-menu>
+	</span>
+	<span class="fill-remaining-space">Bogi költségvetése</span>
+</mat-toolbar>
+<mat-toolbar-row color="primary">
+	<button mat-menu-item [routerLink]="['']">
+		<span>Tárcák</span>
+	</button>
+	<button mat-menu-item [routerLink]="['list']">
+		<span>Tranzakciók</span>
+	</button>
+	<button mat-menu-item [routerLink]="['hello']">
+		<span>Kimutatások</span>
+	</button>
+	<button mat-menu-item [routerLink]="['hello']">
+		<span>Lekötések</span>
+	</button>
+</mat-toolbar-row>
+<router-outlet></router-outlet>

@@ -16,15 +16,15 @@ export class ListComponent implements OnInit {
 			field: 'name',
 			sortable: true,
 			filter: true,
-			singleClickEdit: true
+			suppressSizeToFit: true
 		},
-		{ headerName: 'Tárca', field: 'wallet', sortable: true, filter: true },
-		{ headerName: 'Típus', field: 'type', width: 80, sortable: true, filter: true },
-		{ headerName: 'Kategória', field: 'category', sortable: true, filter: true },
-		{ headerName: 'Alkategória', field: 'subcategory', sortable: true, filter: true },
-		{ headerName: 'Dátum', field: 'date', sortable: true, filter: true },
-		{ headerName: 'Összeg', field: 'amount', sortable: true, filter: true },
-		{ headerName: 'Törlés', field: 'delete', width: 80, checkboxSelection: true }
+		{ headerName: 'Tárca', field: 'wallet', sortable: true, filter: true, resizable: true },
+		{ headerName: 'Típus', field: 'type', sortable: true, filter: true, resizable: true },
+		{ headerName: 'Kategória', field: 'category', sortable: true, filter: true, resizable: true },
+		{ headerName: 'Alkategória', field: 'subcategory', sortable: true, filter: true, resizable: true },
+		{ headerName: 'Dátum', field: 'date', sortable: true, filter: true, resizable: true },
+		{ headerName: 'Összeg', field: 'amount', sortable: true, filter: true, resizable: true },
+		{ headerName: 'Törlés', field: 'delete', checkboxSelection: true, resizable: true }
 	];
 
 	rowData = [
