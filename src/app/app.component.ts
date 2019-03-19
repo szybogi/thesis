@@ -2,6 +2,7 @@ import { TransactionService } from './service/transaction.service';
 import { Component } from '@angular/core';
 import { Transaction } from './model/transaction.class';
 import * as moment from 'moment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
 	selector: 'app-root',
