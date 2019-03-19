@@ -17,6 +17,8 @@ $ph-bg: rgba(255, 255, 255, 0.356) !default;
 // that you are using.
 @include angular-material-theme($client-theme);
 /* You can add global styles to this file, and also import other style files */
+@import '~ag-grid-community/dist/styles/ag-grid.css';
+@import '~ag-grid-community/dist/styles/ag-theme-balham.css';
 
 body {
 	font-family: Roboto, 'Helvetica Neue', sans-serif;

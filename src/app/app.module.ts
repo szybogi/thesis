@@ -35,7 +35,7 @@ registerLocaleData(localeHu, 'hu');
 		CommonModule,
 		BrowserModule,
 		BrowserAnimationsModule,
-		AgGridModule,
+		AgGridModule.withComponents([]),
 		MomentModule,
 		AppRoutingModule,
 		FormsModule,
