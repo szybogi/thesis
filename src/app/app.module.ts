@@ -22,6 +22,8 @@ import { ListPageComponent } from './component/page/list-page/list-page.componen
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeHu from '@angular/common/locales/hu';
 import { HeaderComponent } from './component/header/header.component';
+import { MatIconRegistry } from '@angular/material';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -31,7 +33,14 @@ export class MyHammerConfig extends HammerGestureConfig {
 }
 registerLocaleData(localeHu, 'hu');
 @NgModule({
-	declarations: [AppComponent, HelloComponent, TransactionComponent, ListComponent, ListPageComponent, HeaderComponent],
+	declarations: [
+		AppComponent,
+		HelloComponent,
+		TransactionComponent,
+		ListComponent,
+		ListPageComponent,
+		HeaderComponent
+	],
 	imports: [
 		CommonModule,
 		BrowserModule,
@@ -41,7 +50,8 @@ registerLocaleData(localeHu, 'hu');
 		AppRoutingModule,
 		FormsModule,
 		ReactiveFormsModule,
-		MaterialModule
+		MaterialModule,
+		FontAwesomeModule
 	],
 	providers: [
 		{
