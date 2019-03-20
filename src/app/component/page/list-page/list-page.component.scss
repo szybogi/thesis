@@ -1,7 +1,22 @@
 :host {
-	app-list {
-		display: block;
-		margin-left: 10%;
-		margin-right: 10%;
+	.row {
+		display: flex;
+		flex-direction: row;
+		margin: 5px;
+		.component {
+			margin: 5px;
+		}
 	}
+	.parameters-container {
+		display: flex;
+		flex-direction: column;
+	}
+
+	app-list {
+	}
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 40rem;
+	width: 60%;
 }

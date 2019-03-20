@@ -1,1 +1,43 @@
+<div class="parameters-container">
+	<div class="row">
+		<mat-form-field class="component">
+			<input matInput placeholder="Név" />
+		</mat-form-field>
+
+		<mat-form-field class="component">
+			<mat-select placeholder="Tárca">
+				<mat-option value="option">Készpénz</mat-option>
+				<mat-option value="option">Bankkártya1</mat-option>
+				<mat-option value="option">Bankkártya2</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field class="component">
+			<mat-select placeholder="Típus">
+				<mat-option value="option">Bevétel</mat-option>
+				<mat-option value="option">Kiadás</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<div class="row">
+		<mat-form-field class="component">
+			<input matInput placeholder="Kategória" />
+		</mat-form-field>
+		<mat-form-field class="component">
+			<input matInput placeholder="Alkategória" />
+		</mat-form-field>
+		<mat-form-field class="component">
+			<input matInput [matDatepicker]="picker" placeholder="Dátum" />
+			<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		</mat-form-field>
+	</div>
+	<div class="row">
+		<mat-form-field class="component">
+			<input type="number" min="1" matInput placeholder="Összeg" />
+		</mat-form-field>
+		<button mat-icon-button>
+			<fa-icon icon="plus" size="lg">Hozzáad</fa-icon>
+		</button>
+	</div>
+</div>
 <app-list></app-list>

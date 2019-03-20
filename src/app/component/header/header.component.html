@@ -1,32 +1,40 @@
 <mat-toolbar color="primary">
-	<span class="fill-remaining-space">
+	<span class="fill-remaining-space">Bogi költségvetése</span>
+	<span
+		><button mat-menu-item [routerLink]="['']">
+			<span>Tárcák</span>
+		</button>
+	</span>
+	<span>
+		<button mat-menu-item [routerLink]="['list']">
+			<span>Tranzakciók</span>
+		</button>
+	</span>
+	<span>
+		<button mat-menu-item [routerLink]="['hello']">
+			<span>Kimutatások</span>
+		</button>
+	</span>
+	<span>
+		<button mat-menu-item [routerLink]="['hello']">
+			<span>Lekötések</span>
+		</button></span
+	>
+
+	<span class="fill-remaining-space"></span>
+	<span>
 		<button mat-icon-button [matMenuTriggerFor]="menu">
 			<fa-icon icon="bars" size="lg"></fa-icon>
 		</button>
 		<mat-menu #menu="matMenu" [overlapTrigger]="true">
 			<button mat-menu-item>
-				<mat-icon>settings</mat-icon>
+				<fa-icon icon="cog" size="lg"></fa-icon>
 				<span>Beállítások</span>
 			</button>
 			<button mat-menu-item>
-				<mat-icon>exit_to_app</mat-icon>
+				<fa-icon icon="sign-out-alt" size="lg"></fa-icon>
 				<span>Kijelentkezés</span>
 			</button>
 		</mat-menu>
 	</span>
-	<span class="fill-remaining-space">Bogi költségvetése</span>
 </mat-toolbar>
-<mat-toolbar-row color="primary">
-	<button mat-menu-item [routerLink]="['']">
-		<span>Tárcák</span>
-	</button>
-	<button mat-menu-item [routerLink]="['list']">
-		<span>Tranzakciók</span>
-	</button>
-	<button mat-menu-item [routerLink]="['hello']">
-		<span>Kimutatások</span>
-	</button>
-	<button mat-menu-item [routerLink]="['hello']">
-		<span>Lekötések</span>
-	</button>
-</mat-toolbar-row>

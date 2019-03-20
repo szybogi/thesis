@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactionService } from 'src/app/service/transaction.service';
 import { HttpClient } from '@angular/common/http';
+import { GridEvent } from 'src/app/type/ag-grid-event.type';
 
 @Component({
 	selector: 'app-list',
@@ -15,8 +16,7 @@ export class ListComponent implements OnInit {
 			headerName: 'Tranzakció neve',
 			field: 'name',
 			sortable: true,
-			filter: true,
-			suppressSizeToFit: true
+			filter: true
 		},
 		{ headerName: 'Tárca', field: 'wallet', sortable: true, filter: true, resizable: true },
 		{ headerName: 'Típus', field: 'type', sortable: true, filter: true, resizable: true },
@@ -58,4 +58,23 @@ export class ListComponent implements OnInit {
 	];
 
 	ngOnInit() {}
+
+	onGridSizeChanged(params: GridEvent): void {
+		params.api.sizeColumnsToFit();
+	}
+
+	onSelectionChanged(params: GridEvent): void {
+		const selectedRows = params.api.getSelectedRows();
+		console.log(selectedRows);
+		let selectedRowsString = '';
+		selectedRows.forEach(function(selectedRow, index) {
+			if (index !== 0) {
+				selectedRowsString += ', ';
+			}
+			selectedRowsString += selectedRow.athlete;
+		});
+		// document.querySelector('#selectedRows').innerHTML = selectedRowsString;
+	}
+
+	gridReady(event: GridEvent): void {}
 }
