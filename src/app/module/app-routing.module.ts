@@ -1,11 +1,11 @@
+import { WalletPageComponent } from './../component/page/wallet-page/wallet-page.component';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { HelloComponent } from '../component/hello/hello.component';
 import { ListPageComponent } from '../component/page/list-page/list-page.component';
 
 const routes: Route[] = [
-	{ path: '', redirectTo: '/list', pathMatch: 'full' },
-	{ path: 'hello', component: HelloComponent },
+	{ path: '', redirectTo: '/wallet', pathMatch: 'full' },
+	{ path: 'wallet', component: WalletPageComponent },
 	{ path: 'list', component: ListPageComponent }
 ];
 

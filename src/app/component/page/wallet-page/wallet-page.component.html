@@ -1,0 +1,28 @@
+<mat-accordion>
+	<mat-expansion-panel>
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				Új bankszámla
+			</mat-panel-title>
+		</mat-expansion-panel-header>
+		<div class="row">
+			<mat-form-field class="component">
+				<input matInput placeholder="Név" />
+			</mat-form-field>
+			<mat-form-field class="component">
+				<mat-select placeholder="Felhasználás">
+					<mat-option value="option">Egyéni</mat-option>
+					<mat-option value="option">Közös</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="row">
+			<mat-form-field class="component">
+				<input matInput placeholder="Másik tulajdonos" />
+			</mat-form-field>
+			<button mat-button color="primary">
+				Hozzáad
+			</button>
+		</div>
+	</mat-expansion-panel>
+</mat-accordion>

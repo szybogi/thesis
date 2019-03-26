@@ -1,0 +1,15 @@
+:host {
+	.row {
+		display: flex;
+		flex-direction: row;
+		margin: 5px;
+		.component {
+			margin-right: 30px;
+		}
+	}
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	min-width: 40rem;
+	width: 60%;
+}

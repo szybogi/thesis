@@ -15,7 +15,6 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 
 import { MaterialModule } from './module/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HelloComponent } from './component/hello/hello.component';
 import { TransactionComponent } from './component/transaction/transaction.component';
 import { ListComponent } from './component/list/list.component';
 import { ListPageComponent } from './component/page/list-page/list-page.component';
@@ -24,6 +23,7 @@ import localeHu from '@angular/common/locales/hu';
 import { HeaderComponent } from './component/header/header.component';
 import { MatIconRegistry } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { WalletPageComponent } from './component/page/wallet-page/wallet-page.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -35,11 +35,11 @@ registerLocaleData(localeHu, 'hu');
 @NgModule({
 	declarations: [
 		AppComponent,
-		HelloComponent,
 		TransactionComponent,
 		ListComponent,
 		ListPageComponent,
-		HeaderComponent
+		HeaderComponent,
+		WalletPageComponent
 	],
 	imports: [
 		CommonModule,

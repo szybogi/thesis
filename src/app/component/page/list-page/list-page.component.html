@@ -27,13 +27,35 @@
 			</div>
 			<div class="row">
 				<mat-form-field class="component">
-					<input matInput placeholder="Kategória" />
+					<input
+						type="text"
+						placeholder="Kategória"
+						matInput
+						[formControl]="myControl"
+						[matAutocomplete]="auto"
+					/>
+					<mat-autocomplete #auto="matAutocomplete">
+						<mat-option *ngFor="let option of categoryOptions" [value]="option">
+							{{ option }}
+						</mat-option>
+					</mat-autocomplete>
 				</mat-form-field>
 				<mat-form-field class="component">
-					<input matInput placeholder="Alkategória" />
+					<input
+						type="text"
+						placeholder="Alkategória"
+						matInput
+						[formControl]="myControl"
+						[matAutocomplete]="auto"
+					/>
+					<mat-autocomplete #auto="matAutocomplete">
+						<mat-option *ngFor="let option of subcategoryOptions" [value]="option">
+							{{ option }}
+						</mat-option>
+					</mat-autocomplete>
 				</mat-form-field>
 				<mat-form-field class="component">
-					<input matInput [matDatepicker]="picker" placeholder="Dátum" />
+					<input matInput [max]="maxDate" [matDatepicker]="picker" placeholder="Dátum" />
 					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 					<mat-datepicker #picker></mat-datepicker>
 				</mat-form-field>
