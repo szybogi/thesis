@@ -1,0 +1,12 @@
+.row {
+	display: flex;
+	flex-direction: row;
+	margin: 5px;
+	.mat-card-content {
+		width: 100%;
+		text-align: right;
+	}
+}
+.mat-card-actions {
+	text-align: right;
+}

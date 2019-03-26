@@ -27,36 +27,6 @@ export class ListComponent implements OnInit {
 		{ headerName: 'Törlés', field: 'delete', checkboxSelection: true, resizable: true }
 	];
 
-	rowData = [
-		{
-			name: 'Kenyér',
-			wallet: 'Készpénz',
-			type: 'Kiadás',
-			category: 'Bevásárlás',
-			subcategory: 'Élelmiszer',
-			date: new Date().toDateString(),
-			amount: '320'
-		},
-		{
-			name: 'Tej',
-			wallet: 'Készpénz',
-			type: 'Kiadás',
-			category: 'Bevásárlás',
-			subcategory: 'Élelmiszer',
-			date: new Date().toDateString(),
-			amount: '260'
-		},
-		{
-			name: 'Fizetés',
-			wallet: 'Bankártya1',
-			type: 'Bevétel',
-			category: 'Havi munkabér',
-			subcategory: '',
-			date: new Date().toDateString(),
-			amount: '260000'
-		}
-	];
-
 	ngOnInit() {}
 
 	onGridSizeChanged(params: GridEvent): void {

@@ -23,7 +23,7 @@ $ph-bg: rgba(255, 255, 255, 0.356) !default;
 body {
 	font-family: Roboto, 'Helvetica Neue', sans-serif;
 
-	overflow: hidden;
+	overflow: scroll;
 	margin: 0;
 	// user-select: none;
 	/*background-image: linear-gradient(-10deg, map-get($client-back, 800), map-get($client-back, 800));*/

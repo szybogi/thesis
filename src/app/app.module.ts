@@ -24,6 +24,10 @@ import { HeaderComponent } from './component/header/header.component';
 import { MatIconRegistry } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { WalletPageComponent } from './component/page/wallet-page/wallet-page.component';
+import { CashComponent } from './component/cash/cash.component';
+import { BankAccountComponent } from './component/bank-account/bank-account.component';
+import { LockupComponent } from './component/lockup/lockup.component';
+import { LockupPageComponent } from './component/page/lockup-page/lockup-page.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -39,7 +43,11 @@ registerLocaleData(localeHu, 'hu');
 		ListComponent,
 		ListPageComponent,
 		HeaderComponent,
-		WalletPageComponent
+		WalletPageComponent,
+		CashComponent,
+		BankAccountComponent,
+		LockupComponent,
+		LockupPageComponent
 	],
 	imports: [
 		CommonModule,

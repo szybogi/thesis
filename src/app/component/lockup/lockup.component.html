@@ -1,0 +1,11 @@
+<ag-grid-angular
+	class="ag-theme-balham"
+	[suppressCellSelection]="true"
+	[accentedSort]="true"
+	[rowData]="rowData"
+	[columnDefs]="columnDefs"
+	rowSelection="multiple"
+	(gridSizeChanged)="onGridSizeChanged($event)"
+	(gridReady)="gridReady($event)"
+>
+</ag-grid-angular>

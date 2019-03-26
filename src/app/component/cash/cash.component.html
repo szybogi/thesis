@@ -1,0 +1,16 @@
+<mat-card>
+	<mat-card-title>Készpénz</mat-card-title>
+	<div class="row"><mat-card-subtitle>Tulajdonos</mat-card-subtitle> <mat-card-content>(én)</mat-card-content></div>
+	<div class="row">
+		<mat-card-subtitle>Felhasználás</mat-card-subtitle> <mat-card-content>Egyéni</mat-card-content>
+	</div>
+	<div class="row">
+		<mat-card-subtitle>Egyenleg</mat-card-subtitle> <mat-card-content>{{ balances }}</mat-card-content>
+	</div>
+	<mat-card-actions>
+		<button mat-raised-button color="primary">
+			<fa-icon icon="credit-card" size="lg"></fa-icon>
+			<span>Befizetés bankszámlára</span>
+		</button>
+	</mat-card-actions>
+</mat-card>
