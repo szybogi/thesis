@@ -3,7 +3,7 @@
 	class="ag-theme-balham"
 	[suppressCellSelection]="true"
 	[accentedSort]="true"
-	[rowData]="rowData"
+	[rowData]="transactionService.transactions"
 	[columnDefs]="columnDefs"
 	rowSelection="multiple"
 	(gridSizeChanged)="onGridSizeChanged($event)"

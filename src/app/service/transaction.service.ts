@@ -7,14 +7,25 @@ import * as moment from 'moment';
 })
 export class TransactionService {
 	transactions: Array<Transaction> = [
-		new Transaction(1000, 'kenyer', moment('2018-01-01')),
-		new Transaction(10000, 'kenyer', moment('2018-01-03')),
-		new Transaction(-1000, 'kenyer', moment('2018-01-01')),
-		new Transaction(2000, 'kenyer', moment('2018-01-01')),
-		new Transaction(1000, 'kenyer', moment('2018-01-01')),
-		new Transaction(1000, 'kenyer2', moment('2018-01-01')),
-		new Transaction(1000, 'kenyer', moment('2018-01-02')),
-		new Transaction(1000, 'kenyer', moment('2018-01-08'))
+		new Transaction(
+			'Havi munkabér',
+			'Bankkártya1',
+			'Bevétel',
+			'Munkabér',
+			'Rendszeres juttatás',
+			moment('2019-03-03'),
+			200000
+		),
+		new Transaction(
+			'Vízszámla',
+			'Bankkártya1',
+			'Kiadás',
+			'Számlák',
+			'Rendszeres kiadás',
+			moment('2019-03-03'),
+			20000
+		),
+		new Transaction('Kenyér', 'Készpénz', 'Kiadás', 'Bevásárlás', 'Élelmiszer', moment('2019-03-03'), 260)
 	];
 	constructor() {}
 }

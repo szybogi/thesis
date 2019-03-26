@@ -2,5 +2,13 @@ import * as moment from 'moment';
 import { Moment } from 'moment';
 
 export class Transaction {
-	constructor(public amount: number, public name: string, public date: Moment) {}
+	constructor(
+		public name: string,
+		public wallet: string,
+		public type: string,
+		public category: string,
+		public subcategory: string,
+		public date: Moment,
+		public amount: number
+	) {}
 }
