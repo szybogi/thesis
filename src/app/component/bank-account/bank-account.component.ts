@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Wallet } from './../../model/wallet.interface';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
 	selector: 'app-bank-account',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./bank-account.component.scss']
 })
 export class BankAccountComponent implements OnInit {
+	@Input()
+	public wallet: Wallet;
+
 	constructor() {}
 	private balences: number;
 	balances = 200000;

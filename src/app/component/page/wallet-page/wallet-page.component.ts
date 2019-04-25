@@ -1,4 +1,9 @@
+import { DatabaseService } from './../../../service/database.service';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Wallet } from 'src/app/model/wallet.interface';
+import { map, switchMap } from 'rxjs/operators';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-wallet-page',
@@ -6,7 +11,15 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./wallet-page.component.scss']
 })
 export class WalletPageComponent implements OnInit {
-	constructor() {}
+	public wallets$: Observable<Wallet[]>;
+	walletForm = new FormGroup({
+		walletName: new FormControl(''),
+		walletOwner: new FormControl(''),
+		walletBalance: new FormControl('')
+	});
+	constructor(private databaseService: DatabaseService) {
+		this.wallets$ = databaseService.database$.pipe(switchMap(db => db.wallet.find().$));
+	}
 
 	ngOnInit() {}
 }

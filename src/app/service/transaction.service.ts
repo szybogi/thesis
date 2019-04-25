@@ -13,7 +13,7 @@ export class TransactionService {
 			'Bevétel',
 			'Munkabér',
 			'Rendszeres juttatás',
-			moment('2019-03-03'),
+			moment('2019-03-03').unix(),
 			200000
 		),
 		new Transaction(
@@ -22,10 +22,10 @@ export class TransactionService {
 			'Kiadás',
 			'Számlák',
 			'Rendszeres kiadás',
-			moment('2019-03-03'),
+			moment('2019-03-03').unix(),
 			20000
 		),
-		new Transaction('Kenyér', 'Készpénz', 'Kiadás', 'Bevásárlás', 'Élelmiszer', moment('2019-03-03'), 260)
+		new Transaction('Kenyér', 'Készpénz', 'Kiadás', 'Bevásárlás', 'Élelmiszer', moment('2019-03-03').unix(), 260)
 	];
 	constructor() {}
 }

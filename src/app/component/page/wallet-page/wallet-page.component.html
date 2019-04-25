@@ -26,6 +26,4 @@
 		</div>
 	</mat-expansion-panel>
 </mat-accordion>
-<app-cash></app-cash>
-<app-bank-account></app-bank-account>
-<app-bank-account></app-bank-account>
+<app-bank-account *ngFor="let wallet of (wallets$ | async)" [wallet]="wallet"></app-bank-account>
