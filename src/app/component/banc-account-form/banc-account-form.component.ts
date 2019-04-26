@@ -1,5 +1,7 @@
+import { DatabaseService } from './../../service/database.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { defineBase } from '@angular/core/src/render3';
 
 @Component({
 	selector: 'app-banc-account-form',
@@ -7,7 +9,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 	styleUrls: ['./banc-account-form.component.scss']
 })
 export class BancAccountFormComponent implements OnInit {
-	constructor() {}
+	constructor(public databaseService: DatabaseService) {}
 	walletForm = new FormGroup({
 		walletName: new FormControl(''),
 		walletOwner: new FormControl(''),
@@ -15,8 +17,11 @@ export class BancAccountFormComponent implements OnInit {
 		walletOtherOwner: new FormControl(''),
 		walletBalance: new FormControl('')
 	});
+
 	onSubmit() {
-		console.warn(this.walletForm.value);
+		const wal = this.walletForm.value;
+		console.log(this.walletForm.value);
+		// console.warn(this.walletForm.value);
 	}
 	ngOnInit() {}
 }

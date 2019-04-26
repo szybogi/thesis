@@ -1,11 +1,19 @@
 <mat-card>
 	<mat-card-title>{{ wallet.name }}</mat-card-title>
-	<div class="row"><mat-card-subtitle>Tulajdonos</mat-card-subtitle> <mat-card-content>(én)</mat-card-content></div>
 	<div class="row">
-		<mat-card-subtitle>Felhasználás</mat-card-subtitle> <mat-card-content>Egyéni</mat-card-content>
+		<mat-card-subtitle>Tulajdonos</mat-card-subtitle> <mat-card-content>{{ wallet.owner }}</mat-card-content>
 	</div>
 	<div class="row">
-		<mat-card-subtitle>Egyenleg</mat-card-subtitle> <mat-card-content>{{ balances }}</mat-card-content>
+		<mat-card-subtitle>Felhasználás</mat-card-subtitle>
+		<mat-card-content *ngIf="wallet.individual">Egyéni</mat-card-content>
+		<mat-card-content *ngIf="!wallet.individual">Közös</mat-card-content>
+	</div>
+	<div class="row" *ngIf="!wallet.individual">
+		<mat-card-subtitle>Másik tulajdonos</mat-card-subtitle>
+		<mat-card-content>{{ wallet.otherOnwner }}</mat-card-content>
+	</div>
+	<div class="row">
+		<mat-card-subtitle>Egyenleg</mat-card-subtitle> <mat-card-content>{{ wallet.balance }}</mat-card-content>
 	</div>
 	<mat-card-actions>
 		<button mat-button color="primary">

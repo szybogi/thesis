@@ -1,4 +1,4 @@
-<form [formGroup]="walletForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="walletForm" (submit)="onSubmit()">
 	<mat-accordion>
 		<mat-expansion-panel>
 			<mat-expansion-panel-header>
@@ -19,7 +19,7 @@
 			<mat-form-field>
 				<input matInput placeholder="Másik tulajdonos" type="text" formControlName="walletOtherOwner" />
 			</mat-form-field>
-			<button mat-raised-button color="primary">
+			<button mat-raised-button color="primary" type="submit" [disabled]="!walletForm.valid">
 				Mentés
 			</button>
 		</mat-expansion-panel>
