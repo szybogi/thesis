@@ -11,7 +11,6 @@ export class BankAccountComponent implements OnInit {
 	public wallet: Wallet;
 
 	constructor() {}
-	private balences: number;
 	balances = 200000;
 	ngOnInit() {}
 }

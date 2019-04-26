@@ -49,8 +49,20 @@ export class DatabaseService {
 	}
 
 	private init(db: RxDatabase<DatabaseCollection>) {
-		const testWalletUpsert = db.wallet.upsert({ name: 'Test' });
-		const test2WalletUpsert = db.wallet.upsert({ name: 'Test2' });
+		const testWalletUpsert = db.wallet.upsert({
+			owner: 'Bogi',
+			name: 'OTP1',
+			individual: true,
+			otherOnwner: '',
+			balance: 0
+		});
+		const test2WalletUpsert = db.wallet.upsert({
+			owner: 'Bogi',
+			name: 'Test',
+			individual: false,
+			otherOnwner: 'Sanyi',
+			balance: 1000
+		});
 		return zip(testWalletUpsert, test2WalletUpsert);
 	}
 }

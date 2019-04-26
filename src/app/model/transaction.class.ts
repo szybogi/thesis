@@ -23,8 +23,7 @@ export const transactionSchema: RxJsonSchema = {
 	type: 'object',
 	properties: {
 		name: {
-			type: 'string',
-			primary: true
+			type: 'string'
 		},
 		walletRef: {
 			type: 'string'

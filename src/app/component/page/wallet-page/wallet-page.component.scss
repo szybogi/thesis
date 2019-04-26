@@ -1,12 +1,4 @@
 :host {
-	.row {
-		display: flex;
-		flex-direction: row;
-		margin: 5px;
-		.component {
-			margin-right: 30px;
-		}
-	}
 	display: block;
 	margin: auto;
 	min-width: 40rem;

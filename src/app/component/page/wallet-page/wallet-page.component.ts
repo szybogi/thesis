@@ -12,11 +12,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class WalletPageComponent implements OnInit {
 	public wallets$: Observable<Wallet[]>;
-	walletForm = new FormGroup({
-		walletName: new FormControl(''),
-		walletOwner: new FormControl(''),
-		walletBalance: new FormControl('')
-	});
+
 	constructor(private databaseService: DatabaseService) {
 		this.wallets$ = databaseService.database$.pipe(switchMap(db => db.wallet.find().$));
 	}
