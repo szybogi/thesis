@@ -3,8 +3,8 @@ import { Database, WalletCollection, DatabaseCollection, TransactionCollection }
 import { Injectable } from '@angular/core';
 import RxDB, { RxDatabase, RxDocument } from 'rxdb';
 import * as idb from 'pouchdb-adapter-idb';
-import { from, Observable, zip, Subject } from 'rxjs';
-import { tap, share, switchMap, delayWhen, map } from 'rxjs/operators';
+import { from, Observable, zip, Subject, BehaviorSubject } from 'rxjs';
+import { tap, share, switchMap, delayWhen, map, withLatestFrom } from 'rxjs/operators';
 import { transactionSchema } from '../model/transaction.class';
 
 @Injectable({
@@ -12,7 +12,7 @@ import { transactionSchema } from '../model/transaction.class';
 })
 export class DatabaseService {
 	public database$: Observable<RxDatabase<DatabaseCollection>>;
-
+	public currentUser = new BehaviorSubject<string>('Bogi');
 	public walletSaver = new Subject<Wallet>();
 
 	public constructor() {
@@ -49,6 +49,22 @@ export class DatabaseService {
 			delayWhen(db => this.init(db)),
 			share()
 		);
+
+		this.walletSaver
+			.pipe(
+				tap(wallet => (wallet.owner = this.currentUser.value)),
+				tap(wallet => {
+					if (typeof wallet.individual === 'string') {
+						wallet.individual = wallet.individual === 'true';
+					}
+				}),
+				withLatestFrom(this.database$),
+				switchMap(([wallet, db]) => db.wallet.upsert(wallet))
+			)
+			.subscribe(next => {
+				console.log('New wallet saved!!');
+				console.log(next);
+			});
 	}
 
 	private init(db: RxDatabase<DatabaseCollection>) {

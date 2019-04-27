@@ -26,6 +26,6 @@ export class WalletPageComponent implements OnInit {
 
 	save() {
 		console.log(this.walletForm.value);
-		this.databaseService.walletSaver.next(this.walletForm.value);
+		this.databaseService.walletSaver.next(this.walletForm.value.wallet);
 	}
 }
