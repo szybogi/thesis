@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import RxDB, { RxDatabase, RxDocument } from 'rxdb';
 import * as idb from 'pouchdb-adapter-idb';
 import { from, Observable, zip, Subject, BehaviorSubject } from 'rxjs';
-import { tap, share, switchMap, delayWhen, map, withLatestFrom } from 'rxjs/operators';
+import { tap, share, switchMap, delayWhen, map, withLatestFrom, flatMap } from 'rxjs/operators';
 import { transactionSchema } from '../model/transaction.class';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class DatabaseService {
 	public database$: Observable<RxDatabase<DatabaseCollection>>;
 	public currentUser = new BehaviorSubject<string>('Bogi');
 	public walletSaver = new Subject<Wallet>();
+	public walletDeleter = new Subject<Wallet>();
 
 	public constructor() {
 		RxDB.plugin(idb);
@@ -65,21 +66,26 @@ export class DatabaseService {
 				console.log('New wallet saved!!');
 				console.log(next);
 			});
+
+		this.walletDeleter
+			.pipe(
+				withLatestFrom(this.database$),
+				switchMap(([wallet, db]) => db.wallet.find({ name: wallet.name }).$),
+				flatMap(walletDocs => walletDocs),
+				switchMap(walletDoc => walletDoc.remove())
+			)
+			.subscribe(next => {
+				console.log(`Wallet deleted? ${next}`);
+			});
 	}
 
 	private init(db: RxDatabase<DatabaseCollection>) {
 		const testWalletUpsert = db.wallet.upsert({
 			owner: 'Bogi',
-			name: 'OTP1',
+			name: 'Készpénz',
 			individual: true,
 			otherOwner: ''
 		});
-		const test2WalletUpsert = db.wallet.upsert({
-			owner: 'Bogi',
-			name: 'Test',
-			individual: false,
-			otherOwner: 'Sanyi'
-		});
-		return zip(testWalletUpsert, test2WalletUpsert);
+		return zip(testWalletUpsert);
 	}
 }
