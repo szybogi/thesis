@@ -4,7 +4,18 @@ import { Injectable } from '@angular/core';
 import RxDB, { RxDatabase, RxDocument } from 'rxdb';
 import * as idb from 'pouchdb-adapter-idb';
 import { from, Observable, zip, Subject, BehaviorSubject, of } from 'rxjs';
-import { tap, share, switchMap, delayWhen, map, withLatestFrom, flatMap, startWith, take } from 'rxjs/operators';
+import {
+	tap,
+	share,
+	switchMap,
+	delayWhen,
+	map,
+	withLatestFrom,
+	flatMap,
+	startWith,
+	take,
+	shareReplay
+} from 'rxjs/operators';
 import { transactionSchema } from '../model/transaction.class';
 
 @Injectable({
@@ -47,7 +58,7 @@ export class DatabaseService {
 	public walletDeleter = new Subject<Wallet>();
 	public wallets$ = this.database$.pipe(
 		switchMap(db => db.wallet.find().$),
-		share()
+		shareReplay(1)
 	);
 	public walletNextId$ = this.wallets$.pipe(
 		map(

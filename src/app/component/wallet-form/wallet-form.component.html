@@ -4,11 +4,15 @@
 			<mat-expansion-panel>
 				<mat-expansion-panel-header>
 					<mat-panel-title>
-						Új bankszámla
+						Új bankszámla ello {{ wallet?.errors | json }} {{ parent?.errors | json }}
 					</mat-panel-title>
 				</mat-expansion-panel-header>
 				<mat-form-field>
 					<input matInput placeholder="Név" type="text" formControlName="name" />
+
+					<mat-error *ngIf="parent?.errors && (parent?.errors)['taken']">
+						Foglalt név
+					</mat-error>
 				</mat-form-field>
 				<mat-form-field>
 					<mat-select #walletIndividualSelect placeholder="Felhasználás" formControlName="individual">
