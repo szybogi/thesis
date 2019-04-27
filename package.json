@@ -16,7 +16,7 @@
 	},
 	"scripts": {
 		"ng": "ng",
-		"start": "ng serve",
+		"start": "ng serve --sourceMap=true",
 		"build": "ng build --prod --base-href=\"thesis\"",
 		"test": "ng test",
 		"lint": "ng lint",

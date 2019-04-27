@@ -3,7 +3,7 @@ import { DatabaseService } from './../../../service/database.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Wallet } from 'src/app/model/wallet.interface';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -25,7 +25,12 @@ export class WalletPageComponent implements OnInit {
 	ngOnInit() {}
 
 	save() {
-		console.log(this.walletForm.value);
-		this.databaseService.walletSaver.next(this.walletForm.value.wallet);
+		// ? Because the conditional field only gets hidden and not removed, it's advised to clear all fields that should not be there
+		const walletToSave = this.walletForm.value.wallet as Wallet;
+		if (walletToSave.individual === 'unique') {
+			walletToSave.otherOwner = undefined;
+		}
+		this.databaseService.walletSaver.next(walletToSave);
+		this.walletForm.reset();
 	}
 }

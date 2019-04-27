@@ -56,11 +56,15 @@ export class DatabaseService {
 	public currentUser = new BehaviorSubject<string>('Bogi');
 	public walletSaver = new Subject<Wallet>();
 	public walletDeleter = new Subject<Wallet>();
-	public wallets$ = this.database$.pipe(
+	public walletsReplayed$ = this.database$.pipe(
 		switchMap(db => db.wallet.find().$),
 		shareReplay(1)
 	);
-	public walletNextId$ = this.wallets$.pipe(
+	public wallets$ = this.database$.pipe(
+		switchMap(db => db.wallet.find().$),
+		share()
+	);
+	public walletNextId$ = this.walletsReplayed$.pipe(
 		map(
 			wallets =>
 				`${wallets.map(wallet => Number(wallet.id)).reduce((acc, next) => (acc < next ? next : acc), 0) + 1}`
@@ -72,11 +76,6 @@ export class DatabaseService {
 		this.walletSaver
 			.pipe(
 				tap(wallet => (wallet.owner = this.currentUser.value)),
-				tap(wallet => {
-					if (typeof wallet.individual === 'string') {
-						wallet.individual = wallet.individual === 'true';
-					}
-				}),
 				withLatestFrom(this.walletNextId$),
 				tap(([wallet, id]) => !wallet.id && (wallet.id = id)),
 				map(([wallet]) => wallet),
@@ -106,7 +105,7 @@ export class DatabaseService {
 			id: '1',
 			owner: 'Bogi',
 			name: 'Készpénz',
-			individual: true,
+			individual: 'unique',
 			otherOwner: ''
 		});
 		return zip(testWalletUpsert);

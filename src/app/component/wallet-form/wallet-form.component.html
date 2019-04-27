@@ -4,7 +4,7 @@
 			<mat-expansion-panel>
 				<mat-expansion-panel-header>
 					<mat-panel-title>
-						Új bankszámla ello {{ wallet?.errors | json }} {{ parent?.errors | json }}
+						Új bankszámla
 					</mat-panel-title>
 				</mat-expansion-panel-header>
 				<mat-form-field>
@@ -16,12 +16,12 @@
 				</mat-form-field>
 				<mat-form-field>
 					<mat-select #walletIndividualSelect placeholder="Felhasználás" formControlName="individual">
-						<mat-option value="true">Egyéni</mat-option>
-						<mat-option value="false">Közös</mat-option>
+						<mat-option value="unique">Egyéni</mat-option>
+						<mat-option value="common">Közös</mat-option>
 					</mat-select>
 				</mat-form-field>
 
-				<mat-form-field *ngIf="walletIndividualSelect.value === 'false'">
+				<mat-form-field [style.visibility]="isCommon">
 					<input matInput placeholder="Másik tulajdonos" type="text" formControlName="otherOwner" />
 				</mat-form-field>
 				<button mat-raised-button color="primary" type="submit" [disabled]="!parent.valid">

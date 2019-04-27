@@ -5,7 +5,7 @@ export interface Wallet {
 	id: string;
 	owner: string;
 	name: string;
-	individual: boolean;
+	individual: string;
 	otherOwner: string;
 	balance: number;
 }
@@ -28,7 +28,7 @@ export const walletSchema: RxJsonSchema = {
 			type: 'string'
 		},
 		individual: {
-			type: 'boolean'
+			type: 'string'
 		},
 		otherOwner: {
 			type: 'string'
