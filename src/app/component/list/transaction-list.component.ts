@@ -5,10 +5,10 @@ import { GridEvent } from 'src/app/type/ag-grid-event.type';
 
 @Component({
 	selector: 'app-list',
-	templateUrl: './list.component.html',
-	styleUrls: ['./list.component.scss']
+	templateUrl: './transaction-list.component.html',
+	styleUrls: ['./transaction-list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class TransactionListComponent implements OnInit {
 	constructor(public transactionService: TransactionService) {}
 
 	columnDefs = [

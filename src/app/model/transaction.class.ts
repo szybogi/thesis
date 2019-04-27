@@ -5,6 +5,7 @@ import { Wallet } from './wallet.interface';
 
 export class Transaction {
 	constructor(
+		public id: string,
 		public name: string,
 		public walletRef: string,
 		public type: string,
@@ -22,6 +23,10 @@ export const transactionSchema: RxJsonSchema = {
 	keyCompression: true,
 	type: 'object',
 	properties: {
+		id: {
+			type: 'string',
+			primary: true
+		},
 		name: {
 			type: 'string'
 		},

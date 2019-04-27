@@ -15,9 +15,8 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 
 import { MaterialModule } from './module/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TransactionComponent } from './component/transaction/transaction.component';
-import { ListComponent } from './component/list/list.component';
-import { ListPageComponent } from './component/page/list-page/list-page.component';
+import { TransactionListComponent } from './component/list/transaction-list.component';
+import { TransactionPageComponent } from './component/page/transaction-page/transaction-page.component';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeHu from '@angular/common/locales/hu';
 import { HeaderComponent } from './component/header/header.component';
@@ -40,9 +39,8 @@ registerLocaleData(localeHu, 'hu');
 @NgModule({
 	declarations: [
 		AppComponent,
-		TransactionComponent,
-		ListComponent,
-		ListPageComponent,
+		TransactionListComponent,
+		TransactionPageComponent,
 		HeaderComponent,
 		WalletPageComponent,
 		WalletComponent,

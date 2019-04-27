@@ -17,8 +17,8 @@ export class WalletPageComponent implements OnInit {
 	constructor(private databaseService: DatabaseService, private formBuilder: FormBuilder) {
 		this.wallets$ = this.databaseService.wallets$;
 	}
-	walletForm = this.formBuilder.group({});
 
+	public walletForm = this.formBuilder.group({});
 	@ViewChild('walletForm')
 	walletFormComponent: WalletFormComponent;
 

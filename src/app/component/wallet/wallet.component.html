@@ -1,14 +1,14 @@
-<mat-card>
+<mat-card (click)="modify($event)">
 	<mat-card-title>{{ wallet.name }}</mat-card-title>
 	<div class="row">
 		<mat-card-subtitle>Tulajdonos</mat-card-subtitle> <mat-card-content>{{ wallet.owner }}</mat-card-content>
 	</div>
 	<div class="row">
 		<mat-card-subtitle>Felhasználás</mat-card-subtitle>
-		<mat-card-content *ngIf="wallet.individual">Egyéni</mat-card-content>
-		<mat-card-content *ngIf="!wallet.individual">Közös</mat-card-content>
+		<mat-card-content *ngIf="wallet.individual === 'unique'">Egyéni</mat-card-content>
+		<mat-card-content *ngIf="wallet.individual === 'common'">Közös</mat-card-content>
 	</div>
-	<div class="row" *ngIf="!wallet.individual">
+	<div class="row" *ngIf="wallet.individual === 'common'">
 		<mat-card-subtitle>Másik tulajdonos</mat-card-subtitle>
 		<mat-card-content>{{ wallet.otherOwner }}</mat-card-content>
 	</div>

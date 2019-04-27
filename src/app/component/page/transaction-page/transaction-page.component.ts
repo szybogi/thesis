@@ -3,10 +3,10 @@ import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-list-page',
-	templateUrl: './list-page.component.html',
-	styleUrls: ['./list-page.component.scss']
+	templateUrl: './transaction-page.component.html',
+	styleUrls: ['./transaction-page.component.scss']
 })
-export class ListPageComponent implements OnInit {
+export class TransactionPageComponent implements OnInit {
 	constructor() {}
 	myControl = new FormControl();
 	categoryOptions: string[] = ['Bevásárlás', 'Számlák', 'Programok'];

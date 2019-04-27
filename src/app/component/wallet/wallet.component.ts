@@ -1,6 +1,8 @@
+import { WalletFormComponent } from './../wallet-form/wallet-form.component';
 import { Wallet } from '../../model/wallet.interface';
 import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/service/database.service';
+import { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
 
 @Component({
 	selector: 'app-wallet',
@@ -18,4 +20,5 @@ export class WalletComponent implements OnInit {
 	public delete($event) {
 		this.databaseService.walletDeleter.next(this.wallet);
 	}
+	public modify($event) {}
 }
