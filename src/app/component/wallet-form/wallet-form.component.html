@@ -1,0 +1,29 @@
+<div [formGroup]="parent">
+	<div formGroupName="wallet">
+		<mat-accordion>
+			<mat-expansion-panel>
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						Új bankszámla
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<mat-form-field>
+					<input matInput placeholder="Név" type="text" formControlName="name" />
+				</mat-form-field>
+				<mat-form-field>
+					<mat-select #walletIndividualSelect placeholder="Felhasználás" formControlName="individual">
+						<mat-option value="true">Egyéni</mat-option>
+						<mat-option value="false">Közös</mat-option>
+					</mat-select>
+				</mat-form-field>
+
+				<mat-form-field *ngIf="walletIndividualSelect.value === 'false'">
+					<input matInput placeholder="Másik tulajdonos" type="text" formControlName="otherOwner" />
+				</mat-form-field>
+				<button mat-raised-button color="primary" type="submit" [disabled]="!parent.valid">
+					Mentés
+				</button>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</div>
+</div>

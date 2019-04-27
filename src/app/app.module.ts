@@ -24,11 +24,11 @@ import { HeaderComponent } from './component/header/header.component';
 import { MatIconRegistry } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { WalletPageComponent } from './component/page/wallet-page/wallet-page.component';
-import { BankAccountComponent } from './component/bank-account/bank-account.component';
+import { WalletComponent } from './component/wallet/wallet.component';
 import { LockupComponent } from './component/lockup/lockup.component';
 import { LockupPageComponent } from './component/page/lockup-page/lockup-page.component';
 import { FinancialStatementPageComponent } from './component/page/financial-statement-page/financial-statement-page.component';
-import { BancAccountFormComponent } from './component/banc-account-form/banc-account-form.component';
+import { WalletFormComponent } from './component/wallet-form/wallet-form.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -45,11 +45,11 @@ registerLocaleData(localeHu, 'hu');
 		ListPageComponent,
 		HeaderComponent,
 		WalletPageComponent,
-		BankAccountComponent,
+		WalletComponent,
 		LockupComponent,
 		LockupPageComponent,
 		FinancialStatementPageComponent,
-		BancAccountFormComponent
+		WalletFormComponent
 	],
 	imports: [
 		CommonModule,

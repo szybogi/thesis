@@ -1,2 +1,4 @@
-<app-banc-account-form></app-banc-account-form>
-<app-bank-account *ngFor="let wallet of (wallets$ | async)" [wallet]="wallet"></app-bank-account>
+<form id="walletForm" [formGroup]="walletForm" (submit)="save()">
+	<app-wallet-form #walletFormComponent [parent]="walletForm"></app-wallet-form>
+</form>
+<app-wallet *ngFor="let wallet of wallets$ | async" [wallet]="wallet"></app-wallet>

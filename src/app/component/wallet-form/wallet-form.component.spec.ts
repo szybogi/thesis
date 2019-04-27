@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BancAccountFormComponent } from './banc-account-form.component';
+import { WalletFormComponent } from './wallet-form.component';
 
-describe('BancAccountFormComponent', () => {
-	let component: BancAccountFormComponent;
-	let fixture: ComponentFixture<BancAccountFormComponent>;
+describe('WalletFormComponent', () => {
+	let component: WalletFormComponent;
+	let fixture: ComponentFixture<WalletFormComponent>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [BancAccountFormComponent]
+			declarations: [WalletFormComponent]
 		}).compileComponents();
 	}));
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(BancAccountFormComponent);
+		fixture = TestBed.createComponent(WalletFormComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

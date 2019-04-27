@@ -3,7 +3,7 @@ import { Database, WalletCollection, DatabaseCollection, TransactionCollection }
 import { Injectable } from '@angular/core';
 import RxDB, { RxDatabase, RxDocument } from 'rxdb';
 import * as idb from 'pouchdb-adapter-idb';
-import { from, Observable, zip } from 'rxjs';
+import { from, Observable, zip, Subject } from 'rxjs';
 import { tap, share, switchMap, delayWhen, map } from 'rxjs/operators';
 import { transactionSchema } from '../model/transaction.class';
 
@@ -12,6 +12,9 @@ import { transactionSchema } from '../model/transaction.class';
 })
 export class DatabaseService {
 	public database$: Observable<RxDatabase<DatabaseCollection>>;
+
+	public walletSaver = new Subject<Wallet>();
+
 	public constructor() {
 		RxDB.plugin(idb);
 		this.database$ = from(RxDB.create<DatabaseCollection>({ name: 'db', adapter: 'idb' })).pipe(
@@ -53,15 +56,13 @@ export class DatabaseService {
 			owner: 'Bogi',
 			name: 'OTP1',
 			individual: true,
-			otherOnwner: '',
-			balance: 0
+			otherOwner: ''
 		});
 		const test2WalletUpsert = db.wallet.upsert({
 			owner: 'Bogi',
 			name: 'Test',
 			individual: false,
-			otherOnwner: 'Sanyi',
-			balance: 1000
+			otherOwner: 'Sanyi'
 		});
 		return zip(testWalletUpsert, test2WalletUpsert);
 	}
