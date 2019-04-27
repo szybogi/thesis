@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RxJsonSchema } from 'rxdb';
 
 export interface Wallet {
+	id: string;
 	owner: string;
 	name: string;
 	individual: boolean;
@@ -16,12 +17,15 @@ export const walletSchema: RxJsonSchema = {
 	keyCompression: true,
 	type: 'object',
 	properties: {
+		id: {
+			type: 'string',
+			primary: true
+		},
 		owner: {
 			type: 'string'
 		},
 		name: {
-			type: 'string',
-			primary: true
+			type: 'string'
 		},
 		individual: {
 			type: 'boolean'

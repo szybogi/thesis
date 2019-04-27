@@ -13,7 +13,7 @@
 		<mat-card-content>{{ wallet.otherOwner }}</mat-card-content>
 	</div>
 	<div class="row"><mat-card-subtitle>Egyenleg</mat-card-subtitle> <mat-card-content></mat-card-content></div>
-	<mat-card-actions>
+	<mat-card-actions *ngIf="wallet.name !== 'Készpénz'">
 		<button mat-button color="primary">
 			<fa-icon icon="exchange-alt" size="lg"></fa-icon>
 			<span>Átutalás bankszámlák között</span>
@@ -25,6 +25,12 @@
 		<button mat-raised-button color="primary" (click)="delete($event)">
 			<fa-icon icon="trash-alt" size="lg"></fa-icon>
 			<span>Törlés</span>
+		</button>
+	</mat-card-actions>
+	<mat-card-actions *ngIf="wallet.name === 'Készpénz'">
+		<button mat-button color="primary">
+			<fa-icon icon="exchange-alt" size="lg"></fa-icon>
+			<span>Befizetés bankszámlára</span>
 		</button>
 	</mat-card-actions>
 </mat-card>

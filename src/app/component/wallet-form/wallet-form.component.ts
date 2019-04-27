@@ -16,7 +16,7 @@ export class WalletFormComponent implements OnInit {
 
 	ngOnInit() {
 		this.wallet = this.formBuilder.group({
-			name: ['', []],
+			name: ['', [], []],
 			individual: ['', []],
 			otherOwner: ['', []]
 		});

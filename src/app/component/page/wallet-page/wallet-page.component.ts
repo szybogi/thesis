@@ -15,7 +15,7 @@ export class WalletPageComponent implements OnInit {
 	public wallets$: Observable<Wallet[]>;
 
 	constructor(private databaseService: DatabaseService, private formBuilder: FormBuilder) {
-		this.wallets$ = this.databaseService.database$.pipe(switchMap(db => db.wallet.find().$));
+		this.wallets$ = this.databaseService.wallets$;
 	}
 	walletForm = this.formBuilder.group({});
 
