@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
-	selector: 'app-list-page',
+	selector: 'app-transaction-list-page',
 	templateUrl: './transaction-page.component.html',
 	styleUrls: ['./transaction-page.component.scss']
 })

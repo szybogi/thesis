@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { GridEvent } from 'src/app/type/ag-grid-event.type';
 
 @Component({
-	selector: 'app-list',
+	selector: 'app-transaction-list',
 	templateUrl: './transaction-list.component.html',
 	styleUrls: ['./transaction-list.component.scss']
 })

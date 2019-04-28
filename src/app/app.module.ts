@@ -15,11 +15,11 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 
 import { MaterialModule } from './module/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TransactionListComponent } from './component/list/transaction-list.component';
+import { TransactionListComponent } from './component/transaction-list/transaction-list.component';
 import { TransactionPageComponent } from './component/page/transaction-page/transaction-page.component';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeHu from '@angular/common/locales/hu';
-import { HeaderComponent } from './component/header/header.component';
+import { MenuComponent } from './component/menu/menu.component';
 import { MatIconRegistry } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { WalletPageComponent } from './component/page/wallet-page/wallet-page.component';
@@ -41,7 +41,7 @@ registerLocaleData(localeHu, 'hu');
 		AppComponent,
 		TransactionListComponent,
 		TransactionPageComponent,
-		HeaderComponent,
+		MenuComponent,
 		WalletPageComponent,
 		WalletComponent,
 		LockupComponent,
