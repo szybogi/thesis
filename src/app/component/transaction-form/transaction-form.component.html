@@ -15,7 +15,7 @@
 
 						<mat-form-field class="component">
 							<mat-select formControlName="walletRef" type="text" placeholder="Tárca">
-								<mat-option *ngFor="let wallet of wallets$ | async" value="wallet.name">{{
+								<mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.name">{{
 									wallet.name
 								}}</mat-option>
 							</mat-select>

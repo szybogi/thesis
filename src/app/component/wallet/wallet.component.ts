@@ -3,6 +3,7 @@ import { Wallet } from '../../model/wallet.interface';
 import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/service/database.service';
 import { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-wallet',
@@ -10,10 +11,10 @@ import { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
 	styleUrls: ['./wallet.component.scss']
 })
 export class WalletComponent implements OnInit {
+	constructor(private databaseService: DatabaseService) {}
 	@Input()
 	public wallet: Wallet;
-
-	constructor(private databaseService: DatabaseService) {}
+	ű;
 
 	ngOnInit() {}
 
