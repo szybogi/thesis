@@ -1,3 +1,4 @@
+import { transition } from '@angular/animations';
 import { Wallet, walletSchema } from '../model/wallet.interface';
 import { Database, WalletCollection, DatabaseCollection, TransactionCollection } from './database.d';
 import { Injectable } from '@angular/core';
@@ -16,7 +17,8 @@ import {
 	take,
 	shareReplay
 } from 'rxjs/operators';
-import { transactionSchema } from '../model/transaction.class';
+import * as moment from 'moment';
+import { transactionSchema, Transaction } from '../model/transaction.class';
 
 @Injectable({
 	providedIn: 'root'
@@ -51,14 +53,27 @@ export class DatabaseService {
 			);
 		}),
 		delayWhen(db => this.init(db)),
-		share()
+		shareReplay(1)
 	);
 	public currentUser = new BehaviorSubject<string>('Bogi');
 	public walletSaver = new Subject<Wallet>();
 	public walletDeleter = new Subject<Wallet>();
+	public transactionSaver = new Subject<Transaction>();
 	public walletsReplayed$ = this.database$.pipe(
 		switchMap(db => db.wallet.find().$),
 		shareReplay(1)
+	);
+	public transactionsReplayed$ = this.database$.pipe(
+		switchMap(db => db.transaction.find().$),
+		shareReplay(1)
+	);
+	public transactions$ = this.database$.pipe(
+		switchMap(db => db.transaction.find().$),
+		share()
+	);
+	public transactionsUpdates$ = this.database$.pipe(
+		switchMap(db => db.transaction.update$),
+		share()
 	);
 	public wallets$ = this.database$.pipe(
 		switchMap(db => db.wallet.find().$),
@@ -68,6 +83,15 @@ export class DatabaseService {
 		map(
 			wallets =>
 				`${wallets.map(wallet => Number(wallet.id)).reduce((acc, next) => (acc < next ? next : acc), 0) + 1}`
+		),
+		startWith('1')
+	);
+	public transactionNextId$ = this.transactionsReplayed$.pipe(
+		map(
+			transactions =>
+				`${transactions
+					.map(transaction => Number(transaction.id))
+					.reduce((acc, next) => (acc < next ? next : acc), 0) + 1}`
 		),
 		startWith('1')
 	);
@@ -98,6 +122,19 @@ export class DatabaseService {
 			.subscribe(next => {
 				console.log(`Wallet deleted? ${next}`);
 			});
+
+		this.transactionSaver
+			.pipe(
+				withLatestFrom(this.transactionNextId$),
+				tap(([transaction, id]) => !transaction.id && (transaction.id = id)),
+				map(([transaction]) => transaction),
+				withLatestFrom(this.database$),
+				switchMap(([transaction, db]) => db.transaction.upsert(transaction))
+			)
+			.subscribe(next => {
+				console.log('New transaction saved!!');
+				console.log(next);
+			});
 	}
 
 	private init(db: RxDatabase<DatabaseCollection>) {
@@ -108,6 +145,16 @@ export class DatabaseService {
 			individual: 'unique',
 			otherOwner: ''
 		});
-		return zip(testWalletUpsert);
+		const testTransactionUpsert = db.transaction.upsert({
+			id: '1',
+			name: 'Készpénz inicializálása',
+			type: 'Bevétel',
+			walletRef: 'Készpénz',
+			category: '',
+			subcategory: '',
+			date: moment(moment.now()).unix(),
+			amount: 0
+		});
+		return zip(testWalletUpsert, testTransactionUpsert);
 	}
 }

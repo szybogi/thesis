@@ -1,5 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { transition } from '@angular/animations';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormBuilder } from '@angular/forms';
+import { TransactionListComponent } from '../../transaction-list/transaction-list.component';
+import { Transaction } from 'src/app/model/transaction.class';
+import { Observable } from 'rxjs';
+import { DatabaseService } from 'src/app/service/database.service';
+import { TransactionFormComponent } from '../../transaction-form/transaction-form.component';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-transaction-list-page',
@@ -7,11 +14,24 @@ import { FormControl } from '@angular/forms';
 	styleUrls: ['./transaction-page.component.scss']
 })
 export class TransactionPageComponent implements OnInit {
-	constructor() {}
-	myControl = new FormControl();
-	categoryOptions: string[] = ['Bevásárlás', 'Számlák', 'Programok'];
-	subcategoryOptions: string[] = ['Élelmiszer', 'Gázszámla', 'Mozi'];
-	maxDate = new Date();
+	public transactions$: Observable<Transaction[]>;
+
+	constructor(private databaseService: DatabaseService, private formBuilder: FormBuilder) {
+		this.transactions$ = this.databaseService.transactions$;
+	}
+
+	public transactionForm = this.formBuilder.group({});
+	@ViewChild('transactionForm')
+	transactionFormComponent: TransactionFormComponent;
 
 	ngOnInit() {}
+
+	save() {
+		const a = moment(this.transactionForm.value.transaction.date).unix();
+		console.log(a);
+		const transactionToSave = this.transactionForm.value.transaction as Transaction;
+		transactionToSave.date = a;
+		this.databaseService.transactionSaver.next(transactionToSave);
+		this.transactionForm.reset();
+	}
 }

@@ -28,6 +28,7 @@ import { LockupComponent } from './component/lockup/lockup.component';
 import { LockupPageComponent } from './component/page/lockup-page/lockup-page.component';
 import { FinancialStatementPageComponent } from './component/page/financial-statement-page/financial-statement-page.component';
 import { WalletFormComponent } from './component/wallet-form/wallet-form.component';
+import { TransactionFormComponent } from './component/transaction-form/transaction-form.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -47,7 +48,8 @@ registerLocaleData(localeHu, 'hu');
 		LockupComponent,
 		LockupPageComponent,
 		FinancialStatementPageComponent,
-		WalletFormComponent
+		WalletFormComponent,
+		TransactionFormComponent
 	],
 	imports: [
 		CommonModule,

@@ -1,7 +1,7 @@
 <ag-grid-angular
 	[suppressCellSelection]="true"
 	[accentedSort]="true"
-	[rowData]="transactionService.transactions"
+	[rowData]="rowData"
 	[columnDefs]="columnDefs"
 	rowSelection="multiple"
 	(gridSizeChanged)="onGridSizeChanged($event)"

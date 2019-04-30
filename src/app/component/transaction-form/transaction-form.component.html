@@ -1,0 +1,77 @@
+<div [formGroup]="parent">
+	<div formGroupName="transaction">
+		<mat-accordion>
+			<mat-expansion-panel>
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						Új tranzakció
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+				<div class="parameters-container">
+					<div class="row">
+						<mat-form-field class="component">
+							<input type="text" formControlName="name" matInput placeholder="Név" />
+						</mat-form-field>
+
+						<mat-form-field class="component">
+							<mat-select formControlName="walletRef" type="text" placeholder="Tárca">
+								<mat-option *ngFor="let wallet of wallets$ | async" value="wallet.name">{{
+									wallet.name
+								}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field class="component">
+							<mat-select placeholder="Típus" formControlName="type">
+								<mat-option value="Bevétel">Bevétel</mat-option>
+								<mat-option value="Kiadás">Kiadás</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="row">
+						<mat-form-field class="component">
+							<input
+								type="text"
+								placeholder="Kategória"
+								formControlName="category"
+								matInput
+								[matAutocomplete]="auto"
+							/>
+							<mat-autocomplete #auto="matAutocomplete">
+								<mat-option>Bevásárlás</mat-option>
+								<mat-option>Étterem</mat-option>
+								<mat-option>Számlák</mat-option>
+							</mat-autocomplete>
+						</mat-form-field>
+						<mat-form-field class="component">
+							<input
+								type="text"
+								placeholder="Alkategória"
+								formControlName="subcategory"
+								matInput
+								[matAutocomplete]="auto"
+							/>
+							<mat-autocomplete #auto="matAutocomplete" type="text">
+								<mat-option>Élelmiszer</mat-option>
+								<mat-option>Tisztítószer</mat-option>
+								<mat-option>Állateledel</mat-option>
+							</mat-autocomplete>
+						</mat-form-field>
+						<mat-form-field class="component">
+							<input matInput [matDatepicker]="picker" placeholder="Dátum" formControlName="date" />
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker #picker></mat-datepicker>
+						</mat-form-field>
+					</div>
+					<div class="row">
+						<mat-form-field class="component">
+							<input type="number" formControlName="amount" matInput placeholder="Összeg" />
+						</mat-form-field>
+						<button mat-raised-button color="primary" type="submit" [disabled]="!parent.valid">
+							Mentés
+						</button>
+					</div>
+				</div>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</div>
+</div>

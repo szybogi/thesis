@@ -1,4 +1,6 @@
 <form id="walletForm" [formGroup]="walletForm" (submit)="save()">
 	<app-wallet-form #walletFormComponent [parent]="walletForm"></app-wallet-form>
 </form>
+<!-- {{ walletForm.value | json }}  -->
+
 <app-wallet *ngFor="let wallet of wallets$ | async" [wallet]="wallet"></app-wallet>
