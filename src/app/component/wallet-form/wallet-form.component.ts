@@ -9,8 +9,10 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { DatabaseService } from 'src/app/service/database.service';
-import { filter, flatMap, map, switchMap, delay, endWith, first } from 'rxjs/operators';
+import { filter, flatMap, map, switchMap, delay, endWith, first, tap, switchMapTo } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { walletSchema } from 'src/app/model/wallet.interface';
+import { createHostListener } from '@angular/compiler/src/core';
 
 @Component({
 	selector: 'app-wallet-form',
@@ -31,6 +33,7 @@ export class WalletFormComponent implements OnInit, AfterViewInit {
 	wallet: FormGroup;
 	ngOnInit(): void {
 		this.wallet = this.formBuilder.group({
+			id: ['', []],
 			name: [
 				'',
 				[Validators.required],
@@ -38,11 +41,21 @@ export class WalletFormComponent implements OnInit, AfterViewInit {
 					(ctrl: AbstractControl) =>
 						of(ctrl).pipe(
 							delay(200),
-							switchMap(c => this.databaseService.walletsReplayed$.pipe(first())),
+							switchMapTo(this.databaseService.walletsReplayed$.pipe(first())),
 							flatMap(wallets => wallets),
-							filter(wallet => wallet.name === ctrl.value),
-							map(res => (res ? { taken: true } : undefined)),
-							endWith(undefined),
+							filter(wallet => {
+								if (ctrl.parent.controls['id'].value) {
+									return (
+										(wallet.name === ctrl.value &&
+											wallet.id !== ctrl.parent.controls['id'].value) ||
+										ctrl.value === 'Készpénz'
+									);
+								} else {
+									return wallet.name === ctrl.value;
+								}
+							}),
+							map(res => ({ taken: true })),
+							endWith(of(undefined)),
 							first()
 						)
 				]
@@ -94,5 +107,9 @@ export class WalletFormComponent implements OnInit, AfterViewInit {
 
 	get isCommon() {
 		return this.wallet && this.wallet.controls.individual.value === 'common' ? 'visible' : 'hidden';
+	}
+
+	get isIdDefined() {
+		return this.wallet.controls.id.value === '' || this.wallet.controls.id.value === null;
 	}
 }

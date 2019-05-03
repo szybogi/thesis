@@ -49,12 +49,12 @@
 		"ngx-moment": "~3.4.0",
 		"pouchdb-adapter-idb": "^7.0.0",
 		"rxdb": "^8.1.0",
-		"rxjs": "~6.4.0",
+		"rxjs": "~6.5.1",
 		"tslib": "^1.9.3",
 		"zone.js": "~0.8.29"
 	},
 	"devDependencies": {
-		"@angular-devkit/build-angular": "~0.13.6",
+		"@angular-devkit/build-angular": "^0.13.8",
 		"@angular/cli": "~7.3.6",
 		"@angular/compiler-cli": "^7.2.10",
 		"@angular/language-service": "~7.2.10",

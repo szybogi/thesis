@@ -3,8 +3,11 @@
 		<mat-accordion>
 			<mat-expansion-panel>
 				<mat-expansion-panel-header>
-					<mat-panel-title>
+					<mat-panel-title *ngIf="isIdDefined">
 						Új bankszámla
+					</mat-panel-title>
+					<mat-panel-title *ngIf="!isIdDefined">
+						Bankszámla módosítás
 					</mat-panel-title>
 				</mat-expansion-panel-header>
 				<mat-form-field>
@@ -31,3 +34,4 @@
 		</mat-accordion>
 	</div>
 </div>
+{{ parent.value | json }}
