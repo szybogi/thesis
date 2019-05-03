@@ -27,9 +27,8 @@ export class TransactionPageComponent implements OnInit {
 	ngOnInit() {}
 
 	save() {
-		const a = moment(this.transactionForm.value.transaction.date).unix();
 		const transactionToSave = this.transactionForm.value.transaction as Transaction;
-		transactionToSave.date = a;
+		transactionToSave.date = moment(this.transactionForm.value.transaction.date).unix();
 		this.databaseService.transactionSaver.next(transactionToSave);
 		this.transactionForm.reset();
 	}

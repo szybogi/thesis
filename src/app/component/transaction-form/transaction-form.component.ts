@@ -1,3 +1,4 @@
+import { Transaction } from 'src/app/model/transaction.class';
 import { Moment } from 'moment';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -13,8 +14,10 @@ import { Wallet } from 'src/app/model/wallet.interface';
 })
 export class TransactionFormComponent implements OnInit {
 	public wallets$: Observable<Wallet[]>;
+	public transactions$: Observable<Transaction[]>;
 	constructor(private formBuilder: FormBuilder, private databaseService: DatabaseService) {
-		this.wallets$ = this.databaseService.wallets$;
+		this.wallets$ = this.databaseService.walletsReplayed$;
+		this.transactions$ = this.databaseService.transactionsReplayed$;
 	}
 
 	@Input()

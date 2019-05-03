@@ -15,7 +15,7 @@
 
 						<mat-form-field class="component">
 							<mat-select formControlName="walletRef" type="text" placeholder="Tárca">
-								<mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.name">{{
+								<mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id">{{
 									wallet.name
 								}}</mat-option>
 							</mat-select>
@@ -37,9 +37,7 @@
 								[matAutocomplete]="auto"
 							/>
 							<mat-autocomplete #auto="matAutocomplete">
-								<mat-option>Bevásárlás</mat-option>
-								<mat-option>Étterem</mat-option>
-								<mat-option>Számlák</mat-option>
+								<mat-option></mat-option>
 							</mat-autocomplete>
 						</mat-form-field>
 						<mat-form-field class="component">
@@ -51,9 +49,7 @@
 								[matAutocomplete]="auto"
 							/>
 							<mat-autocomplete #auto="matAutocomplete" type="text">
-								<mat-option>Élelmiszer</mat-option>
-								<mat-option>Tisztítószer</mat-option>
-								<mat-option>Állateledel</mat-option>
+								<mat-option></mat-option>
 							</mat-autocomplete>
 						</mat-form-field>
 						<mat-form-field class="component">

@@ -20,12 +20,15 @@ export class WalletComponent implements OnInit {
 
 	ngOnInit() {}
 
-	public delete($event) {
+	public delete($event: MouseEvent) {
+		$event.stopPropagation();
 		this.databaseService.walletDeleter.next(this.wallet);
 	}
 	public modify($event) {
-		this.walletPageComponent.walletForm.patchValue({
-			wallet: this.wallet.toJSON()
-		});
+		if (this.wallet.name !== 'Készpénz') {
+			this.walletPageComponent.walletForm.patchValue({
+				wallet: this.wallet.toJSON()
+			});
+		}
 	}
 }

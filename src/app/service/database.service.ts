@@ -56,6 +56,7 @@ export class DatabaseService {
 		shareReplay(1)
 	);
 	public currentUser = new BehaviorSubject<string>('Bogi');
+	public currentWallet = new BehaviorSubject<string>('');
 	public walletSaver = new Subject<Wallet>();
 	public walletDeleter = new Subject<Wallet>();
 	public transactionSaver = new Subject<Transaction>();
@@ -149,7 +150,7 @@ export class DatabaseService {
 			id: '1',
 			name: 'Készpénz inicializálása',
 			type: 'Bevétel',
-			walletRef: 'Készpénz',
+			walletRef: '1',
 			category: '',
 			subcategory: '',
 			date: moment(moment.now()).unix(),

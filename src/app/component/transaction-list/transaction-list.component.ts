@@ -1,3 +1,4 @@
+import { walletSchema, Wallet } from 'src/app/model/wallet.interface';
 import { DatabaseService } from 'src/app/service/database.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { TransactionService } from 'src/app/service/transaction.service';
@@ -5,10 +6,11 @@ import { HttpClient } from '@angular/common/http';
 import { GridEvent } from 'src/app/type/ag-grid-event.type';
 import { Transaction } from 'src/app/model/transaction.class';
 import { transition } from '@angular/animations';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { find, take, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { NumberFormatStyle, getLocaleNumberFormat } from '@angular/common';
+import { RxDocument } from 'rxdb';
 
 @Component({
 	selector: 'app-transaction-list',
@@ -18,13 +20,16 @@ import { NumberFormatStyle, getLocaleNumberFormat } from '@angular/common';
 export class TransactionListComponent implements OnInit {
 	@Input()
 	public transaction: Transaction;
-	public transactionsReplayed$: Observable<Transaction[]>;
+
+	public transactionsReplayed$: Observable<RxDocument<Transaction>[]>;
+	public walletsReplayed$: Observable<RxDocument<Wallet>[]>;
 	public transactionsUpdates$: Observable<Transaction>;
 	public columnDefs;
 	public rowData;
 
 	constructor(private databaseService: DatabaseService) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
+		this.walletsReplayed$ = databaseService.walletsReplayed$;
 		this.transactionsUpdates$ = databaseService.transactionsUpdates$.pipe(map(up => up.data.v));
 		this.columnDefs = [
 			{
@@ -37,7 +42,7 @@ export class TransactionListComponent implements OnInit {
 			},
 			{
 				headerName: 'Tárca',
-				field: 'wallet',
+				field: 'walletRef',
 				sortable: true,
 				filter: true,
 				resizable: true,
@@ -49,9 +54,7 @@ export class TransactionListComponent implements OnInit {
 				field: 'type',
 				sortable: true,
 				filter: true,
-				resizable: true,
-				lockVisible: true,
-				lockPosition: true
+				resizable: true
 			},
 			{
 				headerName: 'Kategória',
@@ -88,13 +91,31 @@ export class TransactionListComponent implements OnInit {
 				sortable: true,
 				filter: true,
 				resizable: true,
-				lockVisible: true
+				lockVisible: true,
+				cellStyle: { 'text-align': 'right' }
 			}
 		];
-
-		this.transactionsReplayed$.pipe().subscribe(transactions => {
-			this.rowData = transactions;
-		});
+		combineLatest([this.walletsReplayed$, this.transactionsReplayed$])
+			.pipe(
+				map(([wallets, transactions]) => {
+					return transactions
+						.map(t => t.toJSON())
+						.map(t => {
+							console.log(t);
+							const wallet = wallets.find(w => w.id === t.walletRef);
+							if (wallet) {
+								t.walletRef = wallet.name;
+							} else {
+								t.walletRef = 'Nem létezik';
+							}
+							return t;
+						});
+				})
+			)
+			.subscribe(transactions => {
+				this.rowData = transactions;
+				console.log(this.rowData);
+			});
 	}
 
 	ngOnInit() {}

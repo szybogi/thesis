@@ -45,11 +45,7 @@ export class WalletFormComponent implements OnInit, AfterViewInit {
 							flatMap(wallets => wallets),
 							filter(wallet => {
 								if (ctrl.parent.controls['id'].value) {
-									return (
-										(wallet.name === ctrl.value &&
-											wallet.id !== ctrl.parent.controls['id'].value) ||
-										ctrl.value === 'Készpénz'
-									);
+									return wallet.name === ctrl.value && wallet.id !== ctrl.parent.controls['id'].value;
 								} else {
 									return wallet.name === ctrl.value;
 								}

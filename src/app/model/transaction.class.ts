@@ -31,7 +31,8 @@ export const transactionSchema: RxJsonSchema = {
 			type: 'string'
 		},
 		walletRef: {
-			type: 'string'
+			type: 'string',
+			ref: 'wallet'
 		},
 		type: {
 			type: 'string'
