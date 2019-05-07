@@ -2,10 +2,12 @@
 	class="ag-theme-blue"
 	[suppressCellSelection]="true"
 	[accentedSort]="true"
+	[rowSelection]="rowSelection"
 	[rowData]="rowData"
 	[columnDefs]="columnDefs"
 	rowSelection="multiple"
 	(gridSizeChanged)="onGridSizeChanged($event)"
+	(selectionChanged)="onSelectionChanged($event)"
 	(gridReady)="gridReady($event)"
 >
 </ag-grid-angular>

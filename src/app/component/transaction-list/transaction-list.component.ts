@@ -11,6 +11,7 @@ import { find, take, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { NumberFormatStyle, getLocaleNumberFormat } from '@angular/common';
 import { RxDocument } from 'rxdb';
+import { TransactionPageComponent } from '../page/transaction-page/transaction-page.component';
 
 @Component({
 	selector: 'app-transaction-list',
@@ -26,8 +27,9 @@ export class TransactionListComponent implements OnInit {
 	public transactionsUpdates$: Observable<Transaction>;
 	public columnDefs;
 	public rowData;
+	public rowSelection;
 
-	constructor(private databaseService: DatabaseService) {
+	constructor(private databaseService: DatabaseService, private transactionPageComponent: TransactionPageComponent) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
 		this.walletsReplayed$ = databaseService.walletsReplayed$;
 		this.transactionsUpdates$ = databaseService.transactionsUpdates$.pipe(map(up => up.data.v));
@@ -95,6 +97,9 @@ export class TransactionListComponent implements OnInit {
 				cellStyle: { 'text-align': 'right' }
 			}
 		];
+
+		this.rowSelection = 'single';
+
 		combineLatest([this.walletsReplayed$, this.transactionsReplayed$])
 			.pipe(
 				map(([wallets, transactions]) => {
@@ -137,15 +142,9 @@ export class TransactionListComponent implements OnInit {
 
 	onSelectionChanged(params: GridEvent): void {
 		const selectedRows = params.api.getSelectedRows();
-		console.log(selectedRows);
-		let selectedRowsString = '';
-		selectedRows.forEach(function(selectedRow, index) {
-			if (index !== 0) {
-				selectedRowsString += ', ';
-			}
-			selectedRowsString += selectedRow.athlete;
-		});
-		// document.querySelector('#selectedRows').innerHTML = selectedRowsString;
+		const selectedTransaction = selectedRows.pop();
+		console.log(selectedTransaction);
+		this.transactionPageComponent.transactionForm.patchValue({ transaction: selectedTransaction });
 	}
 
 	gridReady(event: GridEvent): void {

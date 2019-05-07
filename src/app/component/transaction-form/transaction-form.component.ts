@@ -26,6 +26,7 @@ export class TransactionFormComponent implements OnInit {
 	transaction: FormGroup;
 	ngOnInit(): void {
 		this.transaction = this.formBuilder.group({
+			id: ['', []],
 			name: ['', [Validators.required]],
 			walletRef: ['', [Validators.required]],
 			type: ['', [Validators.required]],
