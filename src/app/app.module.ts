@@ -29,6 +29,7 @@ import { LockupPageComponent } from './component/page/lockup-page/lockup-page.co
 import { FinancialStatementPageComponent } from './component/page/financial-statement-page/financial-statement-page.component';
 import { WalletFormComponent } from './component/wallet-form/wallet-form.component';
 import { TransactionFormComponent } from './component/transaction-form/transaction-form.component';
+import { TransactionDeleteRendererComponent } from './component/renderer/transaction-delete-renderer/transaction-delete-renderer.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -49,7 +50,8 @@ registerLocaleData(localeHu, 'hu');
 		LockupPageComponent,
 		FinancialStatementPageComponent,
 		WalletFormComponent,
-		TransactionFormComponent
+		TransactionFormComponent,
+		TransactionDeleteRendererComponent
 	],
 	imports: [
 		CommonModule,
@@ -69,6 +71,7 @@ registerLocaleData(localeHu, 'hu');
 			useClass: MyHammerConfig
 		}
 	],
+	entryComponents: [TransactionDeleteRendererComponent],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

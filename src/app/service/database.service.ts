@@ -60,6 +60,7 @@ export class DatabaseService {
 	public walletSaver = new Subject<Wallet>();
 	public walletDeleter = new Subject<Wallet>();
 	public transactionSaver = new Subject<Transaction>();
+	public transactionDeleter = new Subject<Transaction>();
 	public walletsReplayed$ = this.database$.pipe(
 		switchMap(db => db.wallet.find().$),
 		shareReplay(1)
@@ -135,6 +136,18 @@ export class DatabaseService {
 			.subscribe(next => {
 				console.log('New transaction saved!!');
 				console.log(next);
+			});
+
+		this.transactionDeleter
+			.pipe(
+				withLatestFrom(this.database$),
+				switchMap(([transaction, db]) => db.transaction.find({ id: transaction.id }).$.pipe(take(1))),
+				flatMap(transactions => transactions),
+				tap(d => console.log('Transaction deleter, removes: ' + d)),
+				switchMap(transaction => transaction.remove())
+			)
+			.subscribe(next => {
+				console.log(`Transaction deleted? ${next}`);
 			});
 	}
 

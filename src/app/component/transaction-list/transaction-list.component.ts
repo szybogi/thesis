@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { NumberFormatStyle, getLocaleNumberFormat } from '@angular/common';
 import { RxDocument } from 'rxdb';
 import { TransactionPageComponent } from '../page/transaction-page/transaction-page.component';
+import { TransactionDeleteRendererComponent } from '../renderer/transaction-delete-renderer/transaction-delete-renderer.component';
 
 @Component({
 	selector: 'app-transaction-list',
@@ -28,11 +29,17 @@ export class TransactionListComponent implements OnInit {
 	public columnDefs;
 	public rowData;
 	public rowSelection;
+	public frameworkComponents;
 
 	constructor(private databaseService: DatabaseService, private transactionPageComponent: TransactionPageComponent) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
 		this.walletsReplayed$ = databaseService.walletsReplayed$;
 		this.transactionsUpdates$ = databaseService.transactionsUpdates$.pipe(map(up => up.data.v));
+
+		this.frameworkComponents = {
+			deleteRenderer: TransactionDeleteRendererComponent
+		};
+
 		this.columnDefs = [
 			{
 				headerName: 'Tranzakció neve',
@@ -95,6 +102,11 @@ export class TransactionListComponent implements OnInit {
 				resizable: true,
 				lockVisible: true,
 				cellStyle: { 'text-align': 'right' }
+			},
+			{
+				headerName: 'Törlés',
+				field: 'delete',
+				cellRenderer: 'deleteRenderer'
 			}
 		];
 
@@ -106,7 +118,7 @@ export class TransactionListComponent implements OnInit {
 					return transactions
 						.map(t => t.toJSON())
 						.map(t => {
-							console.log(t);
+							// console.log(t);
 							const wallet = wallets.find(w => w.id === t.walletRef);
 							if (wallet) {
 								t.walletRef = wallet.name;
@@ -119,7 +131,7 @@ export class TransactionListComponent implements OnInit {
 			)
 			.subscribe(transactions => {
 				this.rowData = transactions;
-				console.log(this.rowData);
+				// console.log(this.rowData);
 			});
 	}
 
