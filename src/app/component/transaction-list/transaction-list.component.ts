@@ -7,7 +7,7 @@ import { GridEvent } from 'src/app/type/ag-grid-event.type';
 import { Transaction } from 'src/app/model/transaction.class';
 import { transition } from '@angular/animations';
 import { Observable, combineLatest } from 'rxjs';
-import { find, take, map } from 'rxjs/operators';
+import { find, take, map, tap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { NumberFormatStyle, getLocaleNumberFormat } from '@angular/common';
 import { RxDocument } from 'rxdb';
@@ -143,7 +143,13 @@ export class TransactionListComponent implements OnInit {
 	onSelectionChanged(params: GridEvent): void {
 		const selectedRows = params.api.getSelectedRows();
 		const selectedTransaction = selectedRows.pop();
-		console.log(selectedTransaction);
+		selectedTransaction.date = moment.unix(selectedTransaction.date).toDate();
+		this.walletsReplayed$
+			.pipe(
+				map(wallets => wallets.find(wallet => wallet.name === selectedTransaction.walletRef)),
+				tap(wallet => (selectedTransaction.walletRef = wallet.id))
+			)
+			.subscribe();
 		this.transactionPageComponent.transactionForm.patchValue({ transaction: selectedTransaction });
 	}
 

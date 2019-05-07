@@ -38,4 +38,8 @@ export class TransactionFormComponent implements OnInit {
 
 		this.parent.addControl('transaction', this.transaction);
 	}
+
+	get isIdDefined() {
+		return this.transaction.controls.id.value === '' || this.transaction.controls.id.value === null;
+	}
 }
