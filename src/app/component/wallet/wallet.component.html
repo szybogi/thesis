@@ -1,19 +1,23 @@
 <mat-card (click)="modify($event)">
-	<mat-card-title>{{ wallet.name }}</mat-card-title>
+	<mat-card-title>{{ walletWithTransaction.wallet.name }}</mat-card-title>
 	<div class="row">
-		<mat-card-subtitle>Tulajdonos</mat-card-subtitle> <mat-card-content>{{ wallet.owner }}</mat-card-content>
+		<mat-card-subtitle>Tulajdonos</mat-card-subtitle>
+		<mat-card-content>{{ walletWithTransaction.wallet.owner }}</mat-card-content>
 	</div>
 	<div class="row">
 		<mat-card-subtitle>Felhasználás</mat-card-subtitle>
-		<mat-card-content *ngIf="wallet.individual === 'unique'">Egyéni</mat-card-content>
-		<mat-card-content *ngIf="wallet.individual === 'common'">Közös</mat-card-content>
+		<mat-card-content *ngIf="walletWithTransaction.wallet.individual === 'unique'">Egyéni</mat-card-content>
+		<mat-card-content *ngIf="walletWithTransaction.wallet.individual === 'common'">Közös</mat-card-content>
 	</div>
-	<div class="row" *ngIf="wallet.individual === 'common'">
+	<div class="row" *ngIf="walletWithTransaction.wallet.individual === 'common'">
 		<mat-card-subtitle>Másik tulajdonos</mat-card-subtitle>
-		<mat-card-content>{{ wallet.otherOwner }}</mat-card-content>
+		<mat-card-content>{{ walletWithTransaction.wallet.otherOwner }}</mat-card-content>
 	</div>
-	<div class="row"><mat-card-subtitle>Egyenleg</mat-card-subtitle> <mat-card-content></mat-card-content></div>
-	<mat-card-actions *ngIf="wallet.name !== 'Készpénz'">
+	<div class="row">
+		<mat-card-subtitle>Egyenleg</mat-card-subtitle>
+		<mat-card-content>{{ walletService.sum(walletWithTransaction.transactions) }}</mat-card-content>
+	</div>
+	<mat-card-actions *ngIf="walletWithTransaction.wallet.name !== 'Készpénz'">
 		<button mat-button color="primary">
 			<fa-icon icon="exchange-alt" size="lg"></fa-icon>
 			<span>Átutalás bankszámlák között</span>
@@ -27,7 +31,7 @@
 			<span>Törlés</span>
 		</button>
 	</mat-card-actions>
-	<mat-card-actions *ngIf="wallet.name === 'Készpénz'">
+	<mat-card-actions *ngIf="walletWithTransaction.wallet.name === 'Készpénz'">
 		<button mat-button color="primary">
 			<fa-icon icon="exchange-alt" size="lg"></fa-icon>
 			<span>Befizetés bankszámlára</span>

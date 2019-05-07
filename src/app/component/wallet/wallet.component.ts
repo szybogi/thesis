@@ -1,11 +1,12 @@
+import { WalletService } from 'src/app/service/wallet.service';
 import { WalletPageComponent } from './../page/wallet-page/wallet-page.component';
 import { Wallet } from '../../model/wallet.interface';
 import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/service/database.service';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, from } from 'rxjs';
 import { RxDocument } from 'rxdb';
 import { Transaction } from 'src/app/model/transaction.class';
-import { map } from 'rxjs/operators';
+import { map, tap, flatMap, toArray, filter } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-wallet',
@@ -15,44 +16,28 @@ import { map } from 'rxjs/operators';
 export class WalletComponent implements OnInit {
 	public transactionsReplayed$: Observable<RxDocument<Transaction>[]>;
 	public walletsReplayed$: Observable<RxDocument<Wallet>[]>;
-	constructor(private databaseService: DatabaseService, private walletPageComponent: WalletPageComponent) {
+
+	constructor(
+		private databaseService: DatabaseService,
+		private walletPageComponent: WalletPageComponent,
+		public walletService: WalletService
+	) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
 		this.walletsReplayed$ = databaseService.walletsReplayed$;
-
-		/*combineLatest([this.walletsReplayed$, this.transactionsReplayed$])
-			.pipe(
-				map(([wallets, transactions]) => {
-					return transactions
-						.map(t => t.toJSON())
-						.map(t => {
-							console.log(t);
-
-							const wallet = wallets.find(w => w.id === t.walletRef);
-
-							if (wallet) {
-								t.walletRef = wallet.name;
-							} else {
-								t.walletRef = 'Nem létezik';
-							}
-							return t;
-						});
-				})
-			)
-			.subscribe(); */
 	}
 	@Input()
-	public wallet: RxDocument<Wallet>;
+	public walletWithTransaction: { wallet: RxDocument<Wallet>; transactions: RxDocument<Transaction>[] };
 
 	ngOnInit() {}
 
 	public delete($event: MouseEvent) {
 		$event.stopPropagation();
-		this.databaseService.walletDeleter.next(this.wallet);
+		this.databaseService.walletDeleter.next(this.walletWithTransaction.wallet);
 	}
 	public modify($event) {
-		if (this.wallet.name !== 'Készpénz') {
+		if (this.walletWithTransaction.wallet.name !== 'Készpénz') {
 			this.walletPageComponent.walletForm.patchValue({
-				wallet: this.wallet.toJSON()
+				wallet: this.walletWithTransaction.wallet.toJSON()
 			});
 		}
 	}

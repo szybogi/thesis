@@ -3,4 +3,7 @@
 </form>
 <!-- {{ walletForm.value | json }}  -->
 
-<app-wallet *ngFor="let wallet of wallets$ | async" [wallet]="wallet"></app-wallet>
+<app-wallet
+	*ngFor="let walletWithTransaction of walletsWithTransactions$ | async"
+	[walletWithTransaction]="walletWithTransaction"
+></app-wallet>
