@@ -32,7 +32,8 @@ import {
 	MatSortModule,
 	MatTableModule,
 	MatTabsModule,
-	MatStepperModule
+	MatStepperModule,
+	MAT_DIALOG_DEFAULT_OPTIONS
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgModule } from '@angular/core';
@@ -90,6 +91,9 @@ const modules = [
 @NgModule({
 	imports: [...modules],
 	exports: [...modules],
-	providers: [{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }]
+	providers: [
+		{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+		{ provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+	]
 })
 export class MaterialModule {}

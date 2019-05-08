@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Kézpénz befizetés bankszámlára</h2>
+<mat-dialog-content>
+	<mat-select type="text" placeholder="Bankszámla">
+		<mat-option></mat-option>
+	</mat-select>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close>Mégsem</button>
+	<button mat-button [mat-dialog-close]="true">Befizetés</button>
+</mat-dialog-actions>

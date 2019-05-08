@@ -7,6 +7,8 @@ import { Observable, combineLatest, from } from 'rxjs';
 import { RxDocument } from 'rxdb';
 import { Transaction } from 'src/app/model/transaction.class';
 import { map, tap, flatMap, toArray, filter } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { PaymentToBankaccountDialogComponent } from '../dialog/payment-to-bankaccount-dialog/payment-to-bankaccount-dialog.component';
 
 @Component({
 	selector: 'app-wallet',
@@ -20,7 +22,8 @@ export class WalletComponent implements OnInit {
 	constructor(
 		private databaseService: DatabaseService,
 		private walletPageComponent: WalletPageComponent,
-		public walletService: WalletService
+		public walletService: WalletService,
+		public dialog: MatDialog
 	) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
 		this.walletsReplayed$ = databaseService.walletsReplayed$;
@@ -40,5 +43,21 @@ export class WalletComponent implements OnInit {
 				wallet: this.walletWithTransaction.wallet.toJSON()
 			});
 		}
+	}
+
+	public balanceFormatter(params) {
+		return (
+			Math.floor(params)
+				.toString()
+				.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' Ft'
+		);
+	}
+
+	public openCashDialog() {
+		const dialogRef = this.dialog.open(PaymentToBankaccountDialogComponent);
+
+		dialogRef.afterClosed().subscribe(result => {
+			console.log(`Dialog result: ${result}`);
+		});
 	}
 }

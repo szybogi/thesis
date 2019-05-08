@@ -119,7 +119,7 @@ export class TransactionListComponent implements OnInit {
 						.map(t => t.toJSON())
 						.map(t => {
 							// console.log(t);
-							const wallet = wallets.find(w => w.id === t.walletRef);
+							const wallet = wallets.find(w => w.id === t.walletRef && !t.transfer);
 							if (wallet) {
 								t.walletRef = wallet.name;
 							} else {

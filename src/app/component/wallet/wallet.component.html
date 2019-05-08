@@ -15,7 +15,9 @@
 	</div>
 	<div class="row">
 		<mat-card-subtitle>Egyenleg</mat-card-subtitle>
-		<mat-card-content>{{ walletService.sum(walletWithTransaction.transactions) }}</mat-card-content>
+		<mat-card-content>{{
+			balanceFormatter(walletService.sum(walletWithTransaction.transactions))
+		}}</mat-card-content>
 	</div>
 	<mat-card-actions *ngIf="walletWithTransaction.wallet.name !== 'Készpénz'">
 		<button mat-button color="primary">
@@ -32,7 +34,7 @@
 		</button>
 	</mat-card-actions>
 	<mat-card-actions *ngIf="walletWithTransaction.wallet.name === 'Készpénz'">
-		<button mat-button color="primary">
+		<button mat-button color="primary" (click)="openCashDialog()">
 			<fa-icon icon="exchange-alt" size="lg"></fa-icon>
 			<span>Befizetés bankszámlára</span>
 		</button>

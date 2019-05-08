@@ -12,7 +12,9 @@ export class Transaction {
 		public category: string,
 		public subcategory: string,
 		public date: number,
-		public amount: number
+		public amount: number,
+		public transfer: boolean,
+		public terget: string
 	) {}
 }
 
@@ -48,6 +50,12 @@ export const transactionSchema: RxJsonSchema = {
 		},
 		amount: {
 			type: 'number'
+		},
+		transfer: {
+			type: 'boolean'
+		},
+		target: {
+			type: 'string'
 		}
 	}
 };
