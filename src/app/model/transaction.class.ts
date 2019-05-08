@@ -14,7 +14,7 @@ export class Transaction {
 		public date: number,
 		public amount: number,
 		public transfer: boolean,
-		public terget: string
+		public target: string
 	) {}
 }
 

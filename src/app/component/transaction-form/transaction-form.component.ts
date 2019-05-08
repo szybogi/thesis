@@ -33,7 +33,9 @@ export class TransactionFormComponent implements OnInit {
 			category: ['', [Validators.required]],
 			subcategory: ['', [Validators.required]],
 			date: ['', [Validators.required]],
-			amount: [null, [Validators.required, Validators.min(1)]]
+			amount: [null, [Validators.required, Validators.min(1)]],
+			target: ['', []],
+			transfer: [false, []]
 		});
 
 		this.parent.addControl('transaction', this.transaction);

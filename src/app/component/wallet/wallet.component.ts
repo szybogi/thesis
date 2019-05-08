@@ -7,8 +7,9 @@ import { Observable, combineLatest, from } from 'rxjs';
 import { RxDocument } from 'rxdb';
 import { Transaction } from 'src/app/model/transaction.class';
 import { map, tap, flatMap, toArray, filter } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { PaymentToBankaccountDialogComponent } from '../dialog/payment-to-bankaccount-dialog/payment-to-bankaccount-dialog.component';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-wallet',
@@ -18,6 +19,7 @@ import { PaymentToBankaccountDialogComponent } from '../dialog/payment-to-bankac
 export class WalletComponent implements OnInit {
 	public transactionsReplayed$: Observable<RxDocument<Transaction>[]>;
 	public walletsReplayed$: Observable<RxDocument<Wallet>[]>;
+	public otherWallets$: Observable<RxDocument<Wallet>[]>;
 
 	constructor(
 		private databaseService: DatabaseService,
@@ -54,10 +56,47 @@ export class WalletComponent implements OnInit {
 	}
 
 	public openCashDialog() {
-		const dialogRef = this.dialog.open(PaymentToBankaccountDialogComponent);
+		const dialogConfig = new MatDialogConfig();
+		dialogConfig.data = {
+			id: this.walletWithTransaction.wallet.id
+		};
+		const dialogRef = this.dialog.open(PaymentToBankaccountDialogComponent, dialogConfig);
+		const transactionToSave: Transaction = {
+			id: '',
+			name: '',
+			type: 'Kiadás',
+			walletRef: this.walletWithTransaction.wallet.id,
+			category: '',
+			subcategory: '',
+			amount: null,
+			date: moment.now(),
+			transfer: true,
+			target: ''
+		};
+		const targetToSave: Transaction = {
+			id: '',
+			name: '',
+			type: 'Bevétel',
+			walletRef: '',
+			category: '',
+			subcategory: '',
+			amount: null,
+			date: moment.now(),
+			transfer: true,
+			target: ''
+		};
 
 		dialogRef.afterClosed().subscribe(result => {
-			console.log(`Dialog result: ${result}`);
+			if (result !== undefined) {
+				transactionToSave.target = result.dialogWalletRef;
+				transactionToSave.amount = result.dialogAmount;
+				targetToSave.walletRef = result.dialogWalletRef;
+				targetToSave.amount = result.dialogAmount;
+
+				this.databaseService.transactionSaver.next(transactionToSave);
+				targetToSave.id = String(Number(transactionToSave.id) + 1);
+				this.databaseService.transactionSaver.next(targetToSave);
+			}
 		});
 	}
 }

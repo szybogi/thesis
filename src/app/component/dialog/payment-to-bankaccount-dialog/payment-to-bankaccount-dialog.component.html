@@ -1,10 +1,12 @@
-<h2 mat-dialog-title>Kézpénz befizetés bankszámlára</h2>
-<mat-dialog-content>
-	<mat-select type="text" placeholder="Bankszámla">
-		<mat-option></mat-option>
+<h2 mat-dialog-title>Tranzakció tárcák között</h2>
+<mat-dialog-content [formGroup]="dialogForm">
+	<mat-select formControlName="dialogWalletRef" type="text" placeholder="Bankszámla">
+		<mat-option *ngFor="let wallet of walletsReplayed$ | async" [value]="wallet.id">{{ wallet.name }}</mat-option>
 	</mat-select>
+
+	<input type="number" matInput formControlName="dialogAmount" placeholder="Összeg" />
 </mat-dialog-content>
 <mat-dialog-actions>
-	<button mat-button mat-dialog-close>Mégsem</button>
-	<button mat-button [mat-dialog-close]="true">Befizetés</button>
+	<button mat-button (click)="close()">Mégsem</button>
+	<button mat-raised-button color="primary" (click)="save()" [disabled]="!dialogForm.valid">Befizetés</button>
 </mat-dialog-actions>
