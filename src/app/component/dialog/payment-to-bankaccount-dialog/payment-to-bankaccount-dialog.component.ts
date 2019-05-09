@@ -25,17 +25,9 @@ export class PaymentToBankaccountDialogComponent implements OnInit {
 		@Inject(MAT_DIALOG_DATA) data
 	) {
 		this.id = data.id;
-		this.walletsReplayed$ =
-			databaseService.walletsReplayed$ /*.pipe(
-			flatMap(wallets => wallets),
-			map(wallet => {
-				if (wallet.id !== data.id) {
-					return wallet;
-				}
-			}),
-			toArray(),
-			shareReplay(1)
-		)*/;
+		this.walletsReplayed$ = databaseService.walletsReplayed$.pipe(
+			map(wallets => wallets.filter(wallet => wallet.id !== this.id))
+		);
 	}
 	@Input()
 	public walletWithTransaction: { wallet: RxDocument<Wallet>; transactions: RxDocument<Transaction>[] };

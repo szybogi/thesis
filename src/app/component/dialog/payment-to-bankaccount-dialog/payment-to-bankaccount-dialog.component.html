@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Tranzakció tárcák között</h2>
 <mat-dialog-content [formGroup]="dialogForm">
-	<mat-select formControlName="dialogWalletRef" type="text" placeholder="Bankszámla">
+	<mat-select formControlName="dialogWalletRef" type="text" placeholder="Tárca">
 		<mat-option *ngFor="let wallet of walletsReplayed$ | async" [value]="wallet.id">{{ wallet.name }}</mat-option>
 	</mat-select>
 

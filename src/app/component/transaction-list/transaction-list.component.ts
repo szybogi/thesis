@@ -7,7 +7,7 @@ import { GridEvent } from 'src/app/type/ag-grid-event.type';
 import { Transaction } from 'src/app/model/transaction.class';
 import { transition } from '@angular/animations';
 import { Observable, combineLatest } from 'rxjs';
-import { find, take, map, tap, flatMap, toArray } from 'rxjs/operators';
+import { find, take, map, tap, flatMap, toArray, mapTo } from 'rxjs/operators';
 import * as moment from 'moment';
 import { NumberFormatStyle, getLocaleNumberFormat } from '@angular/common';
 import { RxDocument } from 'rxdb';
@@ -116,6 +116,7 @@ export class TransactionListComponent implements OnInit {
 			.pipe(
 				map(([wallets, transactions]) => {
 					return transactions
+						.filter(transaction => !transaction.transfer)
 						.map(t => t.toJSON())
 						.map(t => {
 							// console.log(t);
