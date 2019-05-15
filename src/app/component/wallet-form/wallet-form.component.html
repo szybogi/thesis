@@ -30,6 +30,9 @@
 				<button mat-raised-button color="primary" type="submit" [disabled]="!parent.valid">
 					Mentés
 				</button>
+				<button mat-button color="primary" *ngIf="!isIdDefined">
+					Mégsem
+				</button>
 			</mat-expansion-panel>
 		</mat-accordion>
 	</div>
