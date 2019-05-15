@@ -1,3 +1,4 @@
+import { filter, map, distinct, flatMap, tap, shareReplay } from 'rxjs/operators';
 import { Transaction } from 'src/app/model/transaction.class';
 import { Moment } from 'moment';
 import { Component, OnInit, Input } from '@angular/core';
@@ -14,10 +15,27 @@ import { Wallet } from 'src/app/model/wallet.interface';
 })
 export class TransactionFormComponent implements OnInit {
 	public wallets$: Observable<Wallet[]>;
-	public transactions$: Observable<Transaction[]>;
+	public transactionsCategory$: Observable<string[]>;
+	public transactionsSubcategory$: Observable<Transaction[]>;
 	constructor(private formBuilder: FormBuilder, private databaseService: DatabaseService) {
 		this.wallets$ = this.databaseService.walletsReplayed$;
-		this.transactions$ = this.databaseService.transactionsReplayed$;
+		this.transactionsCategory$ = this.databaseService.transactionsReplayed$.pipe(
+			map(transactions =>
+				transactions
+					.filter(t => t.category !== undefined && t.category !== '')
+					.map(t => t.category)
+					.reduce((acc, next) => {
+						if (acc.includes(next)) {
+							return acc;
+						} else {
+							acc.push(next);
+							return acc;
+						}
+					}, [])
+			),
+			tap(c => console.log(c)),
+			shareReplay(1)
+		);
 	}
 
 	@Input()

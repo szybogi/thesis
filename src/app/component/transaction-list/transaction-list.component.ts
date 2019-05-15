@@ -30,6 +30,7 @@ export class TransactionListComponent implements OnInit {
 	public rowData;
 	public rowSelection;
 	public frameworkComponents;
+	private gridApi;
 
 	constructor(private databaseService: DatabaseService, private transactionPageComponent: TransactionPageComponent) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
@@ -84,11 +85,11 @@ export class TransactionListComponent implements OnInit {
 				lockPosition: true
 			},
 			{
+				filter: 'agDateColumnFilter',
 				headerName: 'Dátum',
 				valueFormatter: this.dateFormatter,
 				field: 'date',
 				sortable: true,
-				filter: true,
 				resizable: true,
 				lockVisible: true,
 				lockPosition: true

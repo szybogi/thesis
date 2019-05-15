@@ -40,7 +40,9 @@
 								[matAutocomplete]="auto"
 							/>
 							<mat-autocomplete #auto="matAutocomplete">
-								<mat-option></mat-option>
+								<mat-option *ngFor="let c of transactionsCategory$ | async" [value]="c">
+									{{ c }}
+								</mat-option>
 							</mat-autocomplete>
 						</mat-form-field>
 						<mat-form-field class="component">

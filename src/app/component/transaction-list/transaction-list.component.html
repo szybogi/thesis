@@ -1,10 +1,11 @@
 <ag-grid-angular
-	class="ag-theme-blue"
+	class="ag-theme-material"
 	[suppressCellSelection]="true"
 	[accentedSort]="true"
 	[rowSelection]="rowSelection"
 	[rowData]="rowData"
 	[columnDefs]="columnDefs"
+	[suppressNoRowsOverlay]="true"
 	[frameworkComponents]="frameworkComponents"
 	(gridSizeChanged)="onGridSizeChanged($event)"
 	(selectionChanged)="onSelectionChanged($event)"
