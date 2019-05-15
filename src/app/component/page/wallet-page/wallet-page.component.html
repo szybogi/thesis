@@ -1,4 +1,4 @@
-<form id="walletForm" [formGroup]="walletForm" (submit)="save()">
+<form id="walletForm" [formGroup]="walletForm" (submit)="save()" class="wform">
 	<app-wallet-form #walletFormComponent [parent]="walletForm"></app-wallet-form>
 </form>
 <!-- {{ walletForm.value | json }}  -->

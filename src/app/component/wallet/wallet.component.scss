@@ -9,5 +9,12 @@
 }
 .mat-card-actions {
 	margin-right: auto;
-	text-align: left;
+
+	text-align: right;
+}
+.mat-card {
+	margin-block-end: 1%;
+}
+.button {
+	display: inline;
 }
