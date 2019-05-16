@@ -38,6 +38,19 @@ export class WalletComponent implements OnInit {
 	public delete($event: MouseEvent) {
 		$event.stopPropagation();
 		this.databaseService.walletDeleter.next(this.walletWithTransaction.wallet);
+		const targetToSave: Transaction = {
+			id: '',
+			name: '',
+			type: 'Bevétel',
+			walletRef: '1',
+			category: '',
+			subcategory: '',
+			amount: this.walletService.sum(this.walletWithTransaction.transactions),
+			date: moment.now(),
+			transfer: true,
+			target: ''
+		};
+		this.databaseService.transactionSaver.next(targetToSave);
 	}
 	public modify($event) {
 		if (this.walletWithTransaction.wallet.name !== 'Készpénz') {

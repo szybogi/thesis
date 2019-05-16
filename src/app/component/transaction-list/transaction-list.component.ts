@@ -1,3 +1,4 @@
+import { ColumnApi } from 'ag-grid-community';
 import { walletSchema, Wallet } from 'src/app/model/wallet.interface';
 import { DatabaseService } from 'src/app/service/database.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -30,7 +31,8 @@ export class TransactionListComponent implements OnInit {
 	public rowData;
 	public rowSelection;
 	public frameworkComponents;
-	private gridApi;
+	public defaultColDef;
+	public gridApi;
 
 	constructor(private databaseService: DatabaseService, private transactionPageComponent: TransactionPageComponent) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
@@ -44,72 +46,50 @@ export class TransactionListComponent implements OnInit {
 		this.columnDefs = [
 			{
 				headerName: 'Tranzakció neve',
-				field: 'name',
-				sortable: true,
-				filter: true,
-				lockVisible: true,
-				lockPosition: true
+				field: 'name'
 			},
 			{
 				headerName: 'Tárca',
-				field: 'walletRef',
-				sortable: true,
-				filter: true,
-				resizable: true,
-				lockVisible: true,
-				lockPosition: true
+				field: 'walletRef'
 			},
 			{
 				headerName: 'Típus',
-				field: 'type',
-				sortable: true,
-				filter: true,
-				resizable: true
+				field: 'type'
 			},
 			{
 				headerName: 'Kategória',
-				field: 'category',
-				sortable: true,
-				filter: true,
-				resizable: true,
-				lockVisible: true,
-				lockPosition: true
+				field: 'category'
 			},
 			{
 				headerName: 'Alkategória',
-				field: 'subcategory',
-				sortable: true,
-				filter: true,
-				resizable: true,
-				lockVisible: true,
-				lockPosition: true
+				field: 'subcategory'
 			},
 			{
-				filter: 'agDateColumnFilter',
+				filter: true,
+				field: 'date',
 				headerName: 'Dátum',
 				valueFormatter: this.dateFormatter,
-				field: 'date',
-				sortable: true,
-				resizable: true,
-				lockVisible: true,
-				lockPosition: true
+				// comparator: this.dateComparator,
+				sort: 'desc'
 			},
 			{
 				headerName: 'Összeg',
 				valueFormatter: this.amountFormatter,
 				field: 'amount',
-				sortable: true,
-				filter: true,
-				resizable: true,
-				lockVisible: true,
+
 				cellStyle: { 'text-align': 'right' }
 			},
 			{
 				headerName: 'Törlés',
 				field: 'delete',
-				cellRenderer: 'deleteRenderer'
+				cellRenderer: 'deleteRenderer',
+				filter: false,
+				resizable: false,
+				sortable: false
 			}
 		];
+
+		this.defaultColDef = { sortable: true, resizable: true, lockVisible: true, lockPosition: true, filter: true };
 
 		this.rowSelection = 'single';
 
@@ -133,7 +113,6 @@ export class TransactionListComponent implements OnInit {
 			)
 			.subscribe(transactions => {
 				this.rowData = transactions;
-				// console.log(this.rowData);
 			});
 	}
 
@@ -141,6 +120,19 @@ export class TransactionListComponent implements OnInit {
 
 	dateFormatter(params) {
 		return moment.unix(params.value).format('YYYY-MM-DD');
+	}
+
+	dateComparator(date1, date2) {
+		if (date1 === null && date2 === null) {
+			return 0;
+		}
+		if (date1 === null) {
+			return -1;
+		}
+		if (date2 === null) {
+			return 1;
+		}
+		return date1 - date2;
 	}
 
 	amountFormatter(params) {

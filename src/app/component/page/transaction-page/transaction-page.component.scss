@@ -1,17 +1,4 @@
 :host {
-	.row {
-		display: flex;
-		flex-direction: row;
-		margin: 5px;
-		.component {
-			margin: 5px;
-		}
-	}
-	.parameters-container {
-		display: flex;
-		flex-direction: column;
-	}
-
 	display: block;
 	margin-left: auto;
 	margin-right: auto;

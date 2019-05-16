@@ -29,6 +29,8 @@ export class TransactionPageComponent implements OnInit {
 	save() {
 		const transactionToSave = this.transactionForm.value.transaction as Transaction;
 		transactionToSave.date = moment(this.transactionForm.value.transaction.date).unix();
+		transactionToSave.target = '';
+		transactionToSave.transfer = false;
 		this.databaseService.transactionSaver.next(transactionToSave);
 		this.transactionForm.reset();
 	}

@@ -159,16 +159,7 @@ export class DatabaseService {
 			individual: 'unique',
 			otherOwner: ''
 		});
-		const testTransactionUpsert = db.transaction.upsert({
-			id: '1',
-			name: 'Készpénz inicializálása',
-			type: 'Bevétel',
-			walletRef: '1',
-			category: '',
-			subcategory: '',
-			date: moment(moment.now()).unix(),
-			amount: 0
-		});
-		return zip(testWalletUpsert, testTransactionUpsert);
+
+		return zip(testWalletUpsert);
 	}
 }

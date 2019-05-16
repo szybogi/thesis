@@ -12,7 +12,7 @@ export class LockupComponent implements OnInit {
 		{
 			headerName: 'Bankszámla',
 			field: 'bankaccount',
-			sortable: true,
+			sortable: 'true',
 			filter: true
 		},
 		{ headerName: 'Típus', field: 'type', sortable: true, filter: true, resizable: true },
