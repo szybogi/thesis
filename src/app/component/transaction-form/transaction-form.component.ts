@@ -1,4 +1,4 @@
-import { filter, map, distinct, flatMap, tap, shareReplay } from 'rxjs/operators';
+import { filter, map, distinct, flatMap, tap, shareReplay, toArray, startWith } from 'rxjs/operators';
 import { Transaction } from 'src/app/model/transaction.class';
 import { Moment } from 'moment';
 import { Component, OnInit, Input } from '@angular/core';
@@ -8,6 +8,22 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { Wallet } from 'src/app/model/wallet.interface';
 
+export interface Category {
+	type: string;
+	names: string[];
+}
+
+export interface Subcategory {
+	category: string;
+	names: string[];
+}
+
+export const _filter = (opt: string[], value: string): string[] => {
+	const filterValue = value.toLowerCase();
+
+	return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+};
+
 @Component({
 	selector: 'app-transaction-form',
 	templateUrl: './transaction-form.component.html',
@@ -15,48 +31,111 @@ import { Wallet } from 'src/app/model/wallet.interface';
 })
 export class TransactionFormComponent implements OnInit {
 	public wallets$: Observable<Wallet[]>;
-	public transactionsCategory$: Observable<string[]>;
-	public transactionsSubcategory$: Observable<Transaction[]>;
+
+	transaction = this.formBuilder.group({
+		id: ['', []],
+		name: ['', [Validators.required]],
+		walletRef: ['', [Validators.required]],
+		type: ['', [Validators.required]],
+		category: ['', [Validators.required]],
+		subcategory: ['', [Validators.required]],
+		date: ['', [Validators.required]],
+		amount: [null, [Validators.required, Validators.min(1)]],
+		target: ['', []],
+		transfer: [false, []]
+	});
+
+	categories: Category[] = [
+		{
+			type: 'Bevétel',
+			names: ['Munkahelyi', 'Szociális', 'Egyéb']
+		},
+		{
+			type: 'Kiadás',
+			names: ['Bevásárlás', 'Közlekedés', 'Lakhatás', 'Nyaralás', 'Program', 'Képzés', 'Egyéb']
+		}
+	];
+
+	subcategories: Subcategory[] = [
+		{
+			category: 'Munkahelyi',
+			names: ['Munkabér', 'Prémium', 'Kafetéria', 'Egyéb']
+		},
+		{
+			category: 'Szociális',
+			names: ['Segély', 'Családi pótlék', 'Támogatás', 'Egyéb']
+		},
+		{
+			category: 'Bevásárlás',
+			names: ['Élelmiszer', 'Tisztítószer', 'Ruha', 'Állat eledel', 'Egyéb']
+		},
+		{
+			category: 'Közlekedés',
+			names: ['Tömegközlekedés', 'Benzin', 'Pályamatrica', 'Parkolás', 'Egyéb']
+		},
+		{
+			category: 'Lakhatás',
+			names: ['Lakbér', 'Rezsi', 'Egyéb']
+		},
+		{
+			category: 'Nyaralás',
+			names: ['Szállás', 'Utazás', 'Programok', 'Étkezés', 'Egyéb']
+		},
+		{
+			category: 'Program',
+			names: ['Egyedül', 'Családi', 'Baráti', 'Munkahelyi', 'Egyéb']
+		},
+		{
+			category: 'Képzés',
+			names: ['Tandíj', 'Tankönyv', 'Egyéb']
+		},
+		{
+			category: 'Edzés',
+			names: ['Bérlet', 'Ruha', 'Felszerelés', 'Táplálékkiegészítő', 'Egyéb']
+		}
+	];
+
+	categoryOptions: Observable<Category[]>;
+	subcategoryOptions: Observable<Subcategory[]>;
+
 	constructor(private formBuilder: FormBuilder, private databaseService: DatabaseService) {
 		this.wallets$ = this.databaseService.walletsReplayed$;
-		this.transactionsCategory$ = this.databaseService.transactionsReplayed$.pipe(
-			map(transactions =>
-				transactions
-					.filter(t => t.category !== undefined && t.category !== '')
-					.map(t => t.category)
-					.reduce((acc, next) => {
-						if (acc.includes(next)) {
-							return acc;
-						} else {
-							acc.push(next);
-							return acc;
-						}
-					}, [])
-			),
-			tap(c => console.log(c)),
-			shareReplay(1)
-		);
 	}
 
 	@Input()
 	parent: FormGroup;
 
-	transaction: FormGroup;
 	ngOnInit(): void {
-		this.transaction = this.formBuilder.group({
-			id: ['', []],
-			name: ['', [Validators.required]],
-			walletRef: ['', [Validators.required]],
-			type: ['', [Validators.required]],
-			category: ['', [Validators.required]],
-			subcategory: ['', [Validators.required]],
-			date: ['', [Validators.required]],
-			amount: [null, [Validators.required, Validators.min(1)]],
-			target: ['', []],
-			transfer: [false, []]
-		});
-
 		this.parent.addControl('transaction', this.transaction);
+
+		this.categoryOptions = this.transaction.get('category')!.valueChanges.pipe(
+			startWith(''),
+			map(value => this._categoryFilterGroup(value))
+		);
+
+		this.subcategoryOptions = this.transaction.get('subcategory')!.valueChanges.pipe(
+			startWith(''),
+			map(value => this._subcategoryFilterGroup(value))
+		);
+	}
+
+	private _categoryFilterGroup(value: string): Category[] {
+		if (value) {
+			return this.categories
+				.map(group => ({ type: group.type, names: _filter(group.names, value) }))
+				.filter(group => group.names.length > 0);
+		}
+
+		return this.categories;
+	}
+	private _subcategoryFilterGroup(value: string): Subcategory[] {
+		if (value) {
+			return this.subcategories
+				.map(group => ({ category: group.category, names: _filter(group.names, value) }))
+				.filter(group => group.names.length > 0);
+		}
+
+		return this.subcategories;
 	}
 
 	get isIdDefined() {

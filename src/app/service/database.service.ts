@@ -24,6 +24,7 @@ import { transactionSchema, Transaction } from '../model/transaction.class';
 	providedIn: 'root'
 })
 export class DatabaseService {
+	private wId = 2;
 	public database$: Observable<RxDatabase<DatabaseCollection>> = of(RxDB.plugin(idb)).pipe(
 		switchMap(() => RxDB.create<DatabaseCollection>({ name: 'db', adapter: 'idb' })),
 		delayWhen(db => from(db.collection<WalletCollection>({ name: 'wallet', schema: walletSchema }))),
@@ -81,13 +82,6 @@ export class DatabaseService {
 		switchMap(db => db.wallet.find().$),
 		share()
 	);
-	public walletNextId$ = this.walletsReplayed$.pipe(
-		map(
-			wallets =>
-				`${wallets.map(wallet => Number(wallet.id)).reduce((acc, next) => (acc < next ? next : acc), 0) + 1}`
-		),
-		startWith('1')
-	);
 	public transactionNextId$ = this.transactionsReplayed$.pipe(
 		map(
 			transactions =>
@@ -102,9 +96,13 @@ export class DatabaseService {
 		this.walletSaver
 			.pipe(
 				tap(wallet => (wallet.owner = this.currentUser.value)),
-				withLatestFrom(this.walletNextId$),
-				tap(([wallet, id]) => !wallet.id && (wallet.id = id)),
-				map(([wallet]) => wallet),
+
+				tap(wallet => {
+					if (!wallet.id) {
+						wallet.id = String(this.wId);
+						this.wId++;
+					}
+				}),
 				withLatestFrom(this.database$),
 				switchMap(([wallet, db]) => db.wallet.upsert(wallet))
 			)

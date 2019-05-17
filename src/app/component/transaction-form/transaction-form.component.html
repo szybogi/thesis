@@ -32,14 +32,16 @@
 					<input
 						type="text"
 						placeholder="Kategória"
-						formControlName="category"
 						matInput
-						[matAutocomplete]="auto"
+						formControlName="category"
+						[matAutocomplete]="autoGroup"
 					/>
-					<mat-autocomplete #auto="matAutocomplete">
-						<mat-option *ngFor="let c of transactionsCategory$ | async" [value]="c">
-							{{ c }}
-						</mat-option>
+					<mat-autocomplete #autoGroup="matAutocomplete">
+						<mat-optgroup *ngFor="let group of categoryOptions | async" [label]="group.type">
+							<mat-option *ngFor="let name of group.names" [value]="name">
+								{{ name }}
+							</mat-option>
+						</mat-optgroup>
 					</mat-autocomplete>
 				</mat-form-field>
 				<mat-form-field>
@@ -48,10 +50,14 @@
 						placeholder="Alkategória"
 						formControlName="subcategory"
 						matInput
-						[matAutocomplete]="auto"
+						[matAutocomplete]="autoGroup"
 					/>
-					<mat-autocomplete #auto="matAutocomplete" type="text">
-						<mat-option></mat-option>
+					<mat-autocomplete #autoGroup="matAutocomplete">
+						<mat-optgroup *ngFor="let group of subcategoryOptions | async" [label]="group.category">
+							<mat-option *ngFor="let name of group.names" [value]="name">
+								{{ name }}
+							</mat-option>
+						</mat-optgroup>
 					</mat-autocomplete>
 				</mat-form-field>
 				<mat-form-field>
