@@ -1,3 +1,4 @@
+import { User } from './../model/user.interface';
 import { transition } from '@angular/animations';
 import { Wallet, walletSchema } from '../model/wallet.interface';
 import { Database, WalletCollection, DatabaseCollection, TransactionCollection, UserCollection } from './database.d';
@@ -34,7 +35,9 @@ export class DatabaseService {
 		delayWhen(db => this.init(db)),
 		shareReplay(1)
 	);
+	public userUpdate = new Subject<User>();
 	public currentUser = new BehaviorSubject<string>('Teszt');
+	public currentEmail = new BehaviorSubject<string>('test@test.com');
 	public walletSaver = new Subject<Wallet>();
 	public walletDeleter = new Subject<Wallet>();
 	public transactionSaver = new Subject<Transaction>();
@@ -59,6 +62,10 @@ export class DatabaseService {
 		switchMap(db => db.wallet.find().$),
 		share()
 	);
+	public user$ = this.database$.pipe(
+		switchMap(db => db.user.find().$),
+		shareReplay(1)
+	);
 	public transactionNextId$ = this.transactionsReplayed$.pipe(
 		map(
 			transactions =>
@@ -70,10 +77,21 @@ export class DatabaseService {
 	);
 
 	public constructor() {
+		this.userUpdate
+			.pipe(
+				withLatestFrom(this.database$),
+				switchMap(([user, db]) => {
+					this.currentUser.next(user.name);
+					this.currentEmail.next(user.email);
+					return db.user.upsert(user);
+				})
+			)
+			.subscribe(next => {
+				console.log('User saved!!');
+				console.log(next);
+			});
 		this.walletSaver
 			.pipe(
-				tap(wallet => (wallet.owner = this.currentUser.value)),
-
 				tap(wallet => {
 					if (!wallet.id) {
 						wallet.id = String(this.wId);
@@ -127,19 +145,18 @@ export class DatabaseService {
 	}
 
 	private init(db: RxDatabase<DatabaseCollection>) {
-		const testWalletUpsert = db.wallet.upsert({
+		const initWalletUpsert = db.wallet.upsert({
 			id: '1',
-			owner: this.currentUser.value,
 			name: 'Készpénz',
 			individual: 'unique',
 			otherOwner: ''
 		});
-		const testUser = db.user.upsert({
+		const initUserUpsert = db.user.upsert({
 			id: '1',
 			name: 'Teszt',
 			email: 'test@test.com'
 		});
 
-		return zip(testWalletUpsert, testUser);
+		return zip(initWalletUpsert, initUserUpsert);
 	}
 }

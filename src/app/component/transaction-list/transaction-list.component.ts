@@ -33,6 +33,7 @@ export class TransactionListComponent implements OnInit {
 	public frameworkComponents;
 	public defaultColDef;
 	public gridApi;
+	public paginationPageSize;
 
 	constructor(private databaseService: DatabaseService, private transactionPageComponent: TransactionPageComponent) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
@@ -88,7 +89,7 @@ export class TransactionListComponent implements OnInit {
 				sortable: false
 			}
 		];
-
+		this.paginationPageSize = 10;
 		this.defaultColDef = { sortable: true, resizable: true, lockVisible: true, lockPosition: true, filter: true };
 
 		this.rowSelection = 'single';

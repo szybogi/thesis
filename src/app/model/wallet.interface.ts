@@ -3,7 +3,6 @@ import { RxJsonSchema } from 'rxdb';
 
 export interface Wallet {
 	id: string;
-	owner: string;
 	name: string;
 	individual: string;
 	otherOwner: string;
@@ -20,9 +19,6 @@ export const walletSchema: RxJsonSchema = {
 		id: {
 			type: 'string',
 			primary: true
-		},
-		owner: {
-			type: 'string'
 		},
 		name: {
 			type: 'string'

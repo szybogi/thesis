@@ -3,13 +3,14 @@ import { WalletPageComponent } from './../page/wallet-page/wallet-page.component
 import { Wallet } from '../../model/wallet.interface';
 import { Component, OnInit, Input } from '@angular/core';
 import { DatabaseService } from 'src/app/service/database.service';
-import { Observable, combineLatest, from } from 'rxjs';
+import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { RxDocument } from 'rxdb';
 import { Transaction } from 'src/app/model/transaction.class';
 import { map, tap, flatMap, toArray, filter } from 'rxjs/operators';
 import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
 import { PaymentToBankaccountDialogComponent } from '../dialog/payment-to-bankaccount-dialog/payment-to-bankaccount-dialog.component';
 import * as moment from 'moment';
+import { User } from 'src/app/model/user.interface';
 
 @Component({
 	selector: 'app-wallet',
@@ -20,6 +21,7 @@ export class WalletComponent implements OnInit {
 	public transactionsReplayed$: Observable<RxDocument<Transaction>[]>;
 	public walletsReplayed$: Observable<RxDocument<Wallet>[]>;
 	public otherWallets$: Observable<RxDocument<Wallet>[]>;
+	public owner: Observable<RxDocument<User>[]>;
 
 	constructor(
 		private snackBar: MatSnackBar,
@@ -30,6 +32,7 @@ export class WalletComponent implements OnInit {
 	) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
 		this.walletsReplayed$ = databaseService.walletsReplayed$;
+		this.owner = databaseService.user$;
 	}
 	@Input()
 	public walletWithTransaction: { wallet: RxDocument<Wallet>; transactions: RxDocument<Transaction>[] };

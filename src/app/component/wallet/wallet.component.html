@@ -2,7 +2,7 @@
 	<mat-card-title>{{ walletWithTransaction.wallet.name }}</mat-card-title>
 	<div class="row">
 		<mat-card-subtitle>Tulajdonos</mat-card-subtitle>
-		<mat-card-content>{{ walletWithTransaction.wallet.owner }}</mat-card-content>
+		<mat-card-content *ngFor="let u of owner | async" value="u.name">{{ u.name }}</mat-card-content>
 	</div>
 	<div class="row">
 		<mat-card-subtitle>Felhasználás</mat-card-subtitle>

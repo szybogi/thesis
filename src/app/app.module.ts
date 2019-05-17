@@ -33,6 +33,7 @@ import { TransactionDeleteRendererComponent } from './component/renderer/transac
 import { PaymentToBankaccountDialogComponent } from './component/dialog/payment-to-bankaccount-dialog/payment-to-bankaccount-dialog.component';
 import { ZoomableSunburstComponent } from './component/zoomable-sunburst/zoomable-sunburst.component';
 import { HttpClientModule } from '@angular/common/http';
+import { UserDataComponent } from './component/dialog/user-data/user-data.component';
 
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
@@ -56,7 +57,8 @@ registerLocaleData(localeHu, 'hu');
 		TransactionFormComponent,
 		TransactionDeleteRendererComponent,
 		PaymentToBankaccountDialogComponent,
-		ZoomableSunburstComponent
+		ZoomableSunburstComponent,
+		UserDataComponent
 	],
 	imports: [
 		CommonModule,
@@ -77,7 +79,7 @@ registerLocaleData(localeHu, 'hu');
 			useClass: MyHammerConfig
 		}
 	],
-	entryComponents: [TransactionDeleteRendererComponent, PaymentToBankaccountDialogComponent],
+	entryComponents: [TransactionDeleteRendererComponent, PaymentToBankaccountDialogComponent, UserDataComponent],
 	bootstrap: [AppComponent]
 })
 export class AppModule {

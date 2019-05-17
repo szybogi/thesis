@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-	<span class="fill-remaining-space">Bogi költségvetése</span>
+	<span class="fill-remaining-space" *ngFor="let u of owner | async" value="u.name">{{ u.name }} költségvetése</span>
 	<span
 		><button mat-menu-item [routerLink]="['wallet']">
 			<span>Tárcák</span>
@@ -27,7 +27,7 @@
 			<fa-icon icon="bars" size="lg"></fa-icon>
 		</button>
 		<mat-menu #menu="matMenu" [overlapTrigger]="true">
-			<button mat-menu-item>
+			<button mat-menu-item (click)="openCashDialog()">
 				<fa-icon icon="cog" size="lg"></fa-icon>
 				<span>Beállítások</span>
 			</button>
