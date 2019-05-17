@@ -32,7 +32,6 @@ export class ZoomableSunburstComponent implements OnChanges {
 
 	private createChart(): void {
 		d3.select('svg').remove();
-		const root = this.partition(this.data);
 
 		const element = this.chartContainer.nativeElement;
 		const data = this.data;
@@ -57,38 +56,17 @@ export class ZoomableSunburstComponent implements OnChanges {
 			.rangeRound([contentHeight, 0])
 			.domain([0, d3.max(data, d => d.frequency)]);
 
-		const g = svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+		const g = svg.append('g').attr('transform', `translate(${920 / 2},${920 / 2})`);
 
-		g.append('g')
-			.attr('class', 'axis axis--x')
-			.attr('transform', 'translate(0,' + contentHeight + ')')
-			.call(d3.axisBottom(x));
-
-		g.append('g')
-			.attr('class', 'axis axis--y')
-			.call(d3.axisLeft(y).ticks(10, '%'))
-			.append('text')
-			.attr('transform', 'rotate(-90)')
-			.attr('y', 6)
-			.attr('dy', '0.71em')
-			.attr('text-anchor', 'end')
-			.text('Frequency');
-
-		g.selectAll('.bar')
+		g.selectAll('.circle')
 			.data(data)
 			.enter()
 			.append('rect')
+
 			.attr('class', 'bar')
 			.attr('x', d => x(d.letter))
 			.attr('y', d => y(d.frequency))
 			.attr('width', x.bandwidth())
 			.attr('height', d => contentHeight - y(d.frequency));
 	}
-	partition = data => {
-		const root = d3
-			.hierarchy(data)
-			.sum(d => d.value)
-			.sort((a, b) => b.value - a.value);
-		return d3.partition().size([2 * Math.PI, root.height + 1])(root);
-	};
 }
