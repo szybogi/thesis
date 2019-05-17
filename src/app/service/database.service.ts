@@ -1,6 +1,6 @@
 import { transition } from '@angular/animations';
 import { Wallet, walletSchema } from '../model/wallet.interface';
-import { Database, WalletCollection, DatabaseCollection, TransactionCollection } from './database.d';
+import { Database, WalletCollection, DatabaseCollection, TransactionCollection, UserCollection } from './database.d';
 import { Injectable } from '@angular/core';
 import RxDB, { RxDatabase, RxDocument } from 'rxdb';
 import * as idb from 'pouchdb-adapter-idb';
@@ -19,6 +19,7 @@ import {
 } from 'rxjs/operators';
 import * as moment from 'moment';
 import { transactionSchema, Transaction } from '../model/transaction.class';
+import { userSchema } from '../model/user.interface';
 
 @Injectable({
 	providedIn: 'root'
@@ -29,35 +30,11 @@ export class DatabaseService {
 		switchMap(() => RxDB.create<DatabaseCollection>({ name: 'db', adapter: 'idb' })),
 		delayWhen(db => from(db.collection<WalletCollection>({ name: 'wallet', schema: walletSchema }))),
 		delayWhen(db => from(db.collection<TransactionCollection>({ name: 'transaction', schema: transactionSchema }))),
-		tap(db => {
-			db.wallet.postInsert(async function postCreateHook(this: WalletCollection, wallet) {
-				console.log(`Post Insert ${wallet.name}`);
-			}, true);
-			db.wallet.postCreate(async function postCreateHook(this: WalletCollection, wallet) {
-				console.log(`Post Create ${wallet.name}`);
-			});
-			db.wallet.preSave(async function preSaveHook(this: WalletCollection, wallet) {
-				console.log(`Pre Save ${wallet.name}`);
-			}, true);
-			db.wallet.preInsert(async function preInsertHook(this: WalletCollection, wallet) {
-				console.log(`Before inserting ${wallet.name}`);
-			}, true);
-			db.wallet.postInsert(
-				function myPostInsertHook(
-					this: WalletCollection,
-					wallet,
-					document // RxDocument
-				) {
-					console.log('insert to ' + this.name + '-collection: ' + document.name);
-				},
-				false // not async
-			);
-		}),
+		delayWhen(db => from(db.collection<UserCollection>({ name: 'user', schema: userSchema }))),
 		delayWhen(db => this.init(db)),
 		shareReplay(1)
 	);
-	public currentUser = new BehaviorSubject<string>('Bogi');
-	public currentWallet = new BehaviorSubject<string>('');
+	public currentUser = new BehaviorSubject<string>('Teszt');
 	public walletSaver = new Subject<Wallet>();
 	public walletDeleter = new Subject<Wallet>();
 	public transactionSaver = new Subject<Transaction>();
@@ -152,12 +129,17 @@ export class DatabaseService {
 	private init(db: RxDatabase<DatabaseCollection>) {
 		const testWalletUpsert = db.wallet.upsert({
 			id: '1',
-			owner: 'Bogi',
+			owner: this.currentUser.value,
 			name: 'Készpénz',
 			individual: 'unique',
 			otherOwner: ''
 		});
+		const testUser = db.user.upsert({
+			id: '1',
+			name: 'Teszt',
+			email: 'test@test.com'
+		});
 
-		return zip(testWalletUpsert);
+		return zip(testWalletUpsert, testUser);
 	}
 }

@@ -7,7 +7,7 @@ import { Observable, combineLatest, from } from 'rxjs';
 import { RxDocument } from 'rxdb';
 import { Transaction } from 'src/app/model/transaction.class';
 import { map, tap, flatMap, toArray, filter } from 'rxjs/operators';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
 import { PaymentToBankaccountDialogComponent } from '../dialog/payment-to-bankaccount-dialog/payment-to-bankaccount-dialog.component';
 import * as moment from 'moment';
 
@@ -22,6 +22,7 @@ export class WalletComponent implements OnInit {
 	public otherWallets$: Observable<RxDocument<Wallet>[]>;
 
 	constructor(
+		private snackBar: MatSnackBar,
 		private databaseService: DatabaseService,
 		private walletPageComponent: WalletPageComponent,
 		public walletService: WalletService,
@@ -109,6 +110,12 @@ export class WalletComponent implements OnInit {
 				this.databaseService.transactionSaver.next(transactionToSave);
 				targetToSave.id = String(Number(transactionToSave.id) + 1);
 				this.databaseService.transactionSaver.next(targetToSave);
+				if (this.walletService.sum(this.walletWithTransaction.transactions) < transactionToSave.amount) {
+					this.snackBar.open('Az átutaló tárca egyenlege negatív lett!', '', {
+						duration: 5000,
+						panelClass: ['snackbar']
+					});
+				}
 			}
 		});
 	}
