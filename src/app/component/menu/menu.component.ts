@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { User } from 'src/app/model/user.interface';
 import { Observable } from 'rxjs';
 import { RxDocument } from 'rxdb';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-menu',
@@ -20,7 +20,10 @@ export class MenuComponent implements OnInit {
 		private databaseService: DatabaseService,
 		private changeDetector: ChangeDetectorRef
 	) {
-		this.owner = databaseService.user$.pipe(map(u => u.name));
+		this.owner = databaseService.user$.pipe(
+			filter(u => u !== null),
+			map(u => u.name)
+		);
 	}
 
 	ngOnInit() {}

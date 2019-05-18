@@ -32,7 +32,10 @@ export class WalletComponent implements OnInit {
 	) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
 		this.walletsReplayed$ = databaseService.walletsReplayed$;
-		this.owner = databaseService.user$.pipe(map(u => u.name));
+		this.owner = databaseService.user$.pipe(
+			filter(user => user !== null),
+			map(u => u.name)
+		);
 	}
 	@Input()
 	public walletWithTransaction: { wallet: RxDocument<Wallet>; transactions: RxDocument<Transaction>[] };
