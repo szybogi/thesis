@@ -35,7 +35,6 @@ export class WalletPageComponent implements OnInit {
 	ngOnInit() {}
 
 	save() {
-		// ? Because the conditional field only gets hidden and not removed, it's advised to clear all fields that should not be there
 		const walletToSave = this.walletForm.value.wallet as Wallet;
 		if (walletToSave.individual === 'unique') {
 			walletToSave.otherOwner = undefined;

@@ -1,40 +1,6 @@
-<mat-accordion>
-	<mat-expansion-panel>
-		<mat-expansion-panel-header>
-			<mat-panel-title>
-				Új lekötés
-			</mat-panel-title>
-		</mat-expansion-panel-header>
-		<div class="parameters-container">
-			<div class="row">
-				<mat-form-field class="component">
-					<mat-select placeholder="Bankszámla">
-						<mat-option value="option">Bankkártya1</mat-option>
-						<mat-option value="option">Bankkártya2</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="component">
-					<mat-select placeholder="Típus">
-						<mat-option value="option">Egyszeri</mat-option>
-						<mat-option value="option">Rendszeres</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="component">
-					<input type="number" min="1" matInput placeholder="Futamidő" />
-				</mat-form-field>
-			</div>
-			<div class="row">
-				<mat-form-field class="component">
-					<input type="number" min="1" max="100" matInput placeholder="Kamat" />
-				</mat-form-field>
-				<mat-form-field class="component">
-					<input type="number" min="1" matInput placeholder="Összeg" />
-				</mat-form-field>
-				<button mat-raised-button color="primary">
-					Hozzáad
-				</button>
-			</div>
-		</div>
-	</mat-expansion-panel>
-</mat-accordion>
+<form id="lockupForm" [formGroup]="lockupForm" (submit)="save()">
+	<app-lockup-form #lockupFormComponent [parent]="lockupForm"></app-lockup-form>
+</form>
+<!-- {{ lockupForm.value | json }}  -->
+{{ lockupForm.value | json }}
 <app-lockup></app-lockup>

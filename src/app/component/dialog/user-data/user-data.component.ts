@@ -11,16 +11,21 @@ import { map } from 'rxjs/operators';
 })
 export class UserDataComponent implements OnInit {
 	public dialogForm: FormGroup;
+	public name;
+	public email;
 	constructor(
 		private fb: FormBuilder,
 		public dialogRef: MatDialogRef<UserDataComponent>,
 		private databaseService: DatabaseService
-	) {}
+	) {
+		this.databaseService.user$.pipe(map(u => u.name)).subscribe(name => (this.name = name));
+		this.databaseService.user$.pipe(map(u => u.email)).subscribe(email => (this.email = email));
+	}
 
 	ngOnInit() {
 		this.dialogForm = this.fb.group({
-			name: [this.databaseService.currentUser.getValue(), [Validators.required]],
-			email: [this.databaseService.currentEmail.getValue(), [Validators.email]]
+			name: [this.name, [Validators.required]],
+			email: [this.email, [Validators.email]]
 		});
 	}
 	save() {

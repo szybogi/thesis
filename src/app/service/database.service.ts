@@ -1,7 +1,14 @@
 import { User } from './../model/user.interface';
 import { transition } from '@angular/animations';
 import { Wallet, walletSchema } from '../model/wallet.interface';
-import { Database, WalletCollection, DatabaseCollection, TransactionCollection, UserCollection } from './database.d';
+import {
+	Database,
+	WalletCollection,
+	DatabaseCollection,
+	TransactionCollection,
+	UserCollection,
+	LockupCollection
+} from './database.d';
 import { Injectable } from '@angular/core';
 import RxDB, { RxDatabase, RxDocument } from 'rxdb';
 import * as idb from 'pouchdb-adapter-idb';
@@ -21,6 +28,7 @@ import {
 import * as moment from 'moment';
 import { transactionSchema, Transaction } from '../model/transaction.class';
 import { userSchema } from '../model/user.interface';
+import { lockupSchema } from '../model/lockup.interface';
 
 @Injectable({
 	providedIn: 'root'
@@ -32,12 +40,11 @@ export class DatabaseService {
 		delayWhen(db => from(db.collection<WalletCollection>({ name: 'wallet', schema: walletSchema }))),
 		delayWhen(db => from(db.collection<TransactionCollection>({ name: 'transaction', schema: transactionSchema }))),
 		delayWhen(db => from(db.collection<UserCollection>({ name: 'user', schema: userSchema }))),
+		delayWhen(db => from(db.collection<LockupCollection>({ name: 'lockup', schema: lockupSchema }))),
 		delayWhen(db => this.init(db)),
 		shareReplay(1)
 	);
 	public userUpdate = new Subject<User>();
-	public currentUser = new BehaviorSubject<string>('Teszt');
-	public currentEmail = new BehaviorSubject<string>('test@test.com');
 	public walletSaver = new Subject<Wallet>();
 	public walletDeleter = new Subject<Wallet>();
 	public transactionSaver = new Subject<Transaction>();
@@ -63,7 +70,7 @@ export class DatabaseService {
 		share()
 	);
 	public user$ = this.database$.pipe(
-		switchMap(db => db.user.find().$),
+		switchMap(db => db.user.findOne({ id: '1' }).$),
 		shareReplay(1)
 	);
 	public transactionNextId$ = this.transactionsReplayed$.pipe(
@@ -80,11 +87,7 @@ export class DatabaseService {
 		this.userUpdate
 			.pipe(
 				withLatestFrom(this.database$),
-				switchMap(([user, db]) => {
-					this.currentUser.next(user.name);
-					this.currentEmail.next(user.email);
-					return db.user.upsert(user);
-				})
+				switchMap(([user, db]) => db.user.upsert(user))
 			)
 			.subscribe(next => {
 				console.log('User saved!!');
@@ -153,7 +156,7 @@ export class DatabaseService {
 		});
 		const initUserUpsert = db.user.upsert({
 			id: '1',
-			name: 'Teszt',
+			name: 'User',
 			email: 'test@test.com'
 		});
 

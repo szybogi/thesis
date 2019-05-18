@@ -1,0 +1,42 @@
+<div [formGroup]="parent" class="lockups">
+	<div formGroupName="lockup">
+		<mat-accordion>
+			<mat-expansion-panel>
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						Új lekötés
+					</mat-panel-title>
+				</mat-expansion-panel-header>
+
+				<mat-form-field class="component">
+					<mat-select formControlName="walletRef" type="text" placeholder="Tárca">
+						<mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id">{{
+							wallet.name
+						}}</mat-option>
+					</mat-select>
+				</mat-form-field>
+
+				<mat-form-field>
+					<input matInput [matDatepicker]="picker" placeholder="Dátum" formControlName="start" />
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker #picker></mat-datepicker>
+				</mat-form-field>
+				<mat-form-field>
+					<input type="number" formControlName="end" matInput placeholder="Futamidő (hónap)" />
+				</mat-form-field>
+				<mat-form-field>
+					<input type="number" formControlName="interest" matInput placeholder="Kamat (%)" />
+				</mat-form-field>
+				<mat-form-field>
+					<input type="number" formControlName="amount" matInput placeholder="Összeg" />
+				</mat-form-field>
+				<button mat-raised-button color="primary" type="submit" [disabled]="!parent.valid">
+					Mentés
+				</button>
+				<button mat-button color="primary" *ngIf="!isIdDefined">
+					Mégse
+				</button>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</div>
+</div>

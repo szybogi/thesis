@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-	<span class="fill-remaining-space" *ngFor="let u of owner | async" value="u.name">{{ u.name }} költségvetése</span>
+	<span class="fill-remaining-space">{{ owner | async }} költségvetése</span>
 	<span
 		><button mat-menu-item [routerLink]="['wallet']">
 			<span>Tárcák</span>
@@ -28,12 +28,8 @@
 		</button>
 		<mat-menu #menu="matMenu" [overlapTrigger]="true">
 			<button mat-menu-item (click)="openCashDialog()">
-				<fa-icon icon="cog" size="lg"></fa-icon>
-				<span>Beállítások</span>
-			</button>
-			<button mat-menu-item>
-				<fa-icon icon="sign-out-alt" size="lg"></fa-icon>
-				<span>Kijelentkezés</span>
+				<fa-icon icon="user" size="lg"></fa-icon>
+				<span>Felhasználói adatok</span>
 			</button>
 		</mat-menu>
 	</span>

@@ -21,7 +21,7 @@ export class WalletComponent implements OnInit {
 	public transactionsReplayed$: Observable<RxDocument<Transaction>[]>;
 	public walletsReplayed$: Observable<RxDocument<Wallet>[]>;
 	public otherWallets$: Observable<RxDocument<Wallet>[]>;
-	public owner: Observable<RxDocument<User>[]>;
+	public owner: Observable<string>;
 
 	constructor(
 		private snackBar: MatSnackBar,
@@ -32,7 +32,7 @@ export class WalletComponent implements OnInit {
 	) {
 		this.transactionsReplayed$ = databaseService.transactionsReplayed$;
 		this.walletsReplayed$ = databaseService.walletsReplayed$;
-		this.owner = databaseService.user$;
+		this.owner = databaseService.user$.pipe(map(u => u.name));
 	}
 	@Input()
 	public walletWithTransaction: { wallet: RxDocument<Wallet>; transactions: RxDocument<Transaction>[] };
