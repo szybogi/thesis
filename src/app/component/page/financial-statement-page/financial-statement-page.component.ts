@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as d3 from 'd3';
 import { Observable } from 'rxjs';
 import { DataModel } from 'src/app/data/data.model';
 import { HttpClient } from '@angular/common/http';

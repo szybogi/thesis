@@ -8,7 +8,7 @@ import {
 	TransactionCollection,
 	UserCollection,
 	LockupCollection
-} from './database.d';
+} from './database';
 import { Injectable } from '@angular/core';
 import RxDB, { RxDatabase, RxDocument } from 'rxdb';
 import * as idb from 'pouchdb-adapter-idb';

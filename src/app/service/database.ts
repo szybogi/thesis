@@ -1,4 +1,4 @@
-import { UserCollection } from './database.d';
+import { UserCollection } from './database';
 import { Transaction } from 'src/app/model/transaction.class';
 import { Wallet } from '../model/wallet.interface';
 import { RxDatabaseBase, RxCollection, RxDocument } from 'rxdb';

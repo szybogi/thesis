@@ -30,6 +30,7 @@ import { FinancialStatementPageComponent } from './component/page/financial-stat
 import { WalletFormComponent } from './component/wallet-form/wallet-form.component';
 import { TransactionFormComponent } from './component/transaction-form/transaction-form.component';
 import { TransactionDeleteRendererComponent } from './component/renderer/transaction-delete-renderer/transaction-delete-renderer.component';
+// tslint:disable-next-line: max-line-length
 import { PaymentToBankaccountDialogComponent } from './component/dialog/payment-to-bankaccount-dialog/payment-to-bankaccount-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserDataComponent } from './component/dialog/user-data/user-data.component';
