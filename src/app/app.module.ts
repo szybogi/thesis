@@ -36,7 +36,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserDataComponent } from './component/dialog/user-data/user-data.component';
 import { LockupFormComponent } from './component/lockup-form/lockup-form.component';
 import { LockupBreakupRendererComponent } from './component/renderer/lockup-breakup-renderer/lockup-breakup-renderer.component';
-
+import { ChartsModule } from 'ng2-charts';
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
 		pan: { direction: Hammer.DIRECTION_ALL },
@@ -74,7 +74,8 @@ registerLocaleData(localeHu, 'hu');
 		ReactiveFormsModule,
 		MaterialModule,
 		FontAwesomeModule,
-		HttpClientModule
+		HttpClientModule,
+		ChartsModule
 	],
 	providers: [
 		{
