@@ -4,6 +4,7 @@ import { LockupFormComponent } from '../../lockup-form/lockup-form.component';
 import { DatabaseService } from 'src/app/service/database.service';
 import { Lockup } from 'src/app/model/lockup.interface';
 import * as moment from 'moment';
+import { Transaction } from 'src/app/model/transaction.class';
 
 @Component({
 	selector: 'app-lockup-page',
@@ -21,9 +22,27 @@ export class LockupPageComponent implements OnInit {
 
 	save() {
 		const lockupToSave = this.lockupForm.value.lockup as Lockup;
-		lockupToSave.start = moment(this.lockupForm.value.lockup.start).unix();
+		const start = moment(lockupToSave.start).unix();
+		const end = moment(lockupToSave.start)
+			.add(lockupToSave.end, 'month')
+			.unix();
+		lockupToSave.start = start;
+		lockupToSave.end = end;
 		lockupToSave.status = 'Aktív';
-		// this.databaseService.lockupSaver.next(lockupToSave);
+		this.databaseService.lockupSaver.next(lockupToSave);
+		const lockupTransaction: Transaction = {
+			id: '',
+			name: 'Lekötés kezdete',
+			type: 'Kiadás',
+			walletRef: lockupToSave.walletRef,
+			category: 'Hosszútávú befektetés',
+			subcategory: 'Lekötés',
+			amount: lockupToSave.amount,
+			date: start,
+			transfer: false,
+			target: ''
+		};
+		this.databaseService.transactionSaver.next(lockupTransaction);
 		this.lockupForm.reset();
 	}
 }

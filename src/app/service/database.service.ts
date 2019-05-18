@@ -28,13 +28,14 @@ import {
 import * as moment from 'moment';
 import { transactionSchema, Transaction } from '../model/transaction.class';
 import { userSchema } from '../model/user.interface';
-import { lockupSchema } from '../model/lockup.interface';
+import { lockupSchema, Lockup } from '../model/lockup.interface';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class DatabaseService {
 	private wId = 2;
+
 	public database$: Observable<RxDatabase<DatabaseCollection>> = of(RxDB.plugin(idb)).pipe(
 		switchMap(() => RxDB.create<DatabaseCollection>({ name: 'db', adapter: 'idb' })),
 		delayWhen(db => from(db.collection<WalletCollection>({ name: 'wallet', schema: walletSchema }))),
@@ -45,6 +46,7 @@ export class DatabaseService {
 		shareReplay(1)
 	);
 	public userUpdate = new Subject<User>();
+	public lockupSaver = new Subject<Lockup>();
 	public walletSaver = new Subject<Wallet>();
 	public walletDeleter = new Subject<Wallet>();
 	public transactionSaver = new Subject<Transaction>();
@@ -55,6 +57,10 @@ export class DatabaseService {
 	);
 	public transactionsReplayed$ = this.database$.pipe(
 		switchMap(db => db.transaction.find().$),
+		shareReplay(1)
+	);
+	public lockupsReplayed$ = this.database$.pipe(
+		switchMap(db => db.lockup.find().$),
 		shareReplay(1)
 	);
 	public transactions$ = this.database$.pipe(
@@ -79,6 +85,14 @@ export class DatabaseService {
 				`${transactions
 					.map(transaction => Number(transaction.id))
 					.reduce((acc, next) => (acc < next ? next : acc), 0) + 1}`
+		),
+		startWith('1')
+	);
+
+	public lockupNextId$ = this.lockupsReplayed$.pipe(
+		map(
+			lockups =>
+				`${lockups.map(lockup => Number(lockup.id)).reduce((acc, next) => (acc < next ? next : acc), 0) + 1}`
 		),
 		startWith('1')
 	);
@@ -144,6 +158,19 @@ export class DatabaseService {
 			)
 			.subscribe(next => {
 				console.log(`Transaction deleted? ${next}`);
+			});
+
+		this.lockupSaver
+			.pipe(
+				withLatestFrom(this.lockupNextId$),
+				tap(([lockup, id]) => !lockup.id && (lockup.id = id)),
+				map(([lockup]) => lockup),
+				withLatestFrom(this.database$),
+				switchMap(([lockup, db]) => db.lockup.upsert(lockup))
+			)
+			.subscribe(next => {
+				console.log('New transaction saved!!');
+				console.log(next);
 			});
 	}
 

@@ -33,6 +33,9 @@ export const lockupSchema: RxJsonSchema = {
 		end: {
 			type: 'number'
 		},
+		amount: {
+			type: 'number'
+		},
 		status: {
 			type: 'string'
 		}
