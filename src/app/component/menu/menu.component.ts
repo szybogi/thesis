@@ -26,7 +26,13 @@ export class MenuComponent implements OnInit {
 		);
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.databaseService.user$.pipe().subscribe(user => {
+			if (user === null) {
+				this.openCashDialog();
+			}
+		});
+	}
 
 	public openCashDialog() {
 		const dialogRef = this.dialog.open(UserDataComponent);
