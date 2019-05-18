@@ -1,3 +1,3 @@
-<button mat-raised-button color="primary" (click)="delete($event)">
+<button mat-raised-button color="primary" (click)="delete($event)" *ngIf="deletable">
 	<fa-icon icon="trash-alt" size="lg"></fa-icon>
 </button>

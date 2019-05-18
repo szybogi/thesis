@@ -12,13 +12,18 @@ export class TransactionDeleteRendererComponent implements ICellRendererAngularC
 	constructor(private databaseService: DatabaseService) {}
 
 	public params: any;
+	public deletable = true;
 
 	agInit(params: any): void {
 		this.params = params;
+		if (params.data.name === 'Lekötés kezdete') {
+			this.deletable = false;
+		}
 	}
 
 	public delete($event: MouseEvent) {
 		$event.stopPropagation();
+
 		this.databaseService.transactionDeleter.next(this.params.data as Transaction);
 	}
 

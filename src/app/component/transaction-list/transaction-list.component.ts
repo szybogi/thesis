@@ -30,6 +30,7 @@ export class TransactionListComponent implements OnInit {
 	public columnDefs;
 	public rowData;
 	public rowSelection;
+	public isRowSelectable;
 	public frameworkComponents;
 	public defaultColDef;
 	public gridApi;
@@ -93,6 +94,12 @@ export class TransactionListComponent implements OnInit {
 		this.defaultColDef = { sortable: true, resizable: true, lockVisible: true, lockPosition: true, filter: true };
 
 		this.rowSelection = 'single';
+
+		this.isRowSelectable = function(rowNode) {
+			return rowNode.data
+				? rowNode.data.name !== 'Lekötés kezdete' && rowNode.data.name !== 'Lekötés vége'
+				: false;
+		};
 
 		combineLatest([this.walletsReplayed$, this.transactionsReplayed$])
 			.pipe(
