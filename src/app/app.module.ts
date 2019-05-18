@@ -31,7 +31,6 @@ import { WalletFormComponent } from './component/wallet-form/wallet-form.compone
 import { TransactionFormComponent } from './component/transaction-form/transaction-form.component';
 import { TransactionDeleteRendererComponent } from './component/renderer/transaction-delete-renderer/transaction-delete-renderer.component';
 import { PaymentToBankaccountDialogComponent } from './component/dialog/payment-to-bankaccount-dialog/payment-to-bankaccount-dialog.component';
-import { ZoomableSunburstComponent } from './component/zoomable-sunburst/zoomable-sunburst.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserDataComponent } from './component/dialog/user-data/user-data.component';
 import { LockupFormComponent } from './component/lockup-form/lockup-form.component';
@@ -59,7 +58,6 @@ registerLocaleData(localeHu, 'hu');
 		TransactionFormComponent,
 		TransactionDeleteRendererComponent,
 		PaymentToBankaccountDialogComponent,
-		ZoomableSunburstComponent,
 		UserDataComponent,
 		LockupFormComponent,
 		LockupBreakupRendererComponent
