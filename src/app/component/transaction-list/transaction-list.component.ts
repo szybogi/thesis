@@ -67,18 +67,15 @@ export class TransactionListComponent implements OnInit {
 				field: 'subcategory'
 			},
 			{
-				filter: true,
 				field: 'date',
 				headerName: 'Dátum',
 				valueFormatter: this.dateFormatter,
-				// comparator: this.dateComparator,
 				sort: 'desc'
 			},
 			{
 				headerName: 'Összeg',
 				valueFormatter: this.amountFormatter,
 				field: 'amount',
-
 				cellStyle: { 'text-align': 'right' }
 			},
 			{
@@ -128,19 +125,6 @@ export class TransactionListComponent implements OnInit {
 
 	dateFormatter(params) {
 		return moment.unix(params.value).format('YYYY-MM-DD');
-	}
-
-	dateComparator(date1, date2) {
-		if (date1 === null && date2 === null) {
-			return 0;
-		}
-		if (date1 === null) {
-			return -1;
-		}
-		if (date2 === null) {
-			return 1;
-		}
-		return date1 - date2;
 	}
 
 	amountFormatter(params) {

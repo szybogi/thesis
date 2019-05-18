@@ -1,3 +1,4 @@
+import { find, map } from 'rxjs/operators';
 import { FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { LockupFormComponent } from '../../lockup-form/lockup-form.component';
@@ -36,12 +37,19 @@ export class LockupPageComponent implements OnInit {
 			type: 'Kiadás',
 			walletRef: lockupToSave.walletRef,
 			category: 'Hosszútávú befektetés',
-			subcategory: 'Lekötés',
+			subcategory: lockupToSave.name,
 			amount: lockupToSave.amount,
 			date: start,
 			transfer: false,
-			target: ''
+			target: lockupToSave.id
 		};
+		this.databaseService.transactionsReplayed$
+			.pipe(map(t => t.find(t => t.target === lockupTransaction.target)))
+			.subscribe(t => {
+				if (t) {
+					lockupTransaction.id = t.id;
+				}
+			});
 		this.databaseService.transactionSaver.next(lockupTransaction);
 		this.lockupForm.reset();
 	}

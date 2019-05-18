@@ -3,11 +3,16 @@
 		<mat-accordion>
 			<mat-expansion-panel>
 				<mat-expansion-panel-header>
-					<mat-panel-title>
+					<mat-panel-title *ngIf="isIdDefined">
 						Új lekötés
 					</mat-panel-title>
+					<mat-panel-title *ngIf="!isIdDefined">
+						Lekötés módosítás
+					</mat-panel-title>
 				</mat-expansion-panel-header>
-
+				<mat-form-field>
+					<input type="text" formControlName="name" matInput placeholder="Lekötés neve" />
+				</mat-form-field>
 				<mat-form-field class="component">
 					<mat-select formControlName="walletRef" type="text" placeholder="Tárca">
 						<mat-option *ngFor="let wallet of wallets$ | async" [value]="wallet.id">{{

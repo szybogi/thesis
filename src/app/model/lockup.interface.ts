@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RxJsonSchema } from 'rxdb';
 export interface Lockup {
 	id: string;
+	name: string;
 	walletRef: string;
 	interest: number;
 	amount: number;
@@ -20,6 +21,9 @@ export const lockupSchema: RxJsonSchema = {
 		id: {
 			type: 'string',
 			primary: true
+		},
+		name: {
+			type: 'string'
 		},
 		walletRef: {
 			type: 'string'

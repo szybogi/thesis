@@ -13,6 +13,7 @@ export class LockupFormComponent implements OnInit {
 	public wallets$: Observable<Wallet[]>;
 	lockup = this.formBuilder.group({
 		id: ['', []],
+		name: ['', [Validators.required]],
 		walletRef: ['', [Validators.required]],
 		interest: [null, [Validators.required, Validators.min(0.1)]],
 		amount: [null, [Validators.required, Validators.min(1)]],

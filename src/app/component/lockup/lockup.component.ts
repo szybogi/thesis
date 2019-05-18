@@ -1,5 +1,14 @@
+import { LockupPageComponent } from './../page/lockup-page/lockup-page.component';
+import { RxDocument } from 'rxdb';
+import { DatabaseService } from 'src/app/service/database.service';
+import { LockupBreakupRendererComponent } from './../renderer/lockup-breakup-renderer/lockup-breakup-renderer.component';
+import { Lockup } from 'src/app/model/lockup.interface';
 import { Component, OnInit } from '@angular/core';
 import { GridEvent } from 'src/app/type/ag-grid-event.type';
+import * as moment from 'moment';
+import { Observable, combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Wallet } from 'src/app/model/wallet.interface';
 
 @Component({
 	selector: 'app-lockup',
@@ -7,61 +16,126 @@ import { GridEvent } from 'src/app/type/ag-grid-event.type';
 	styleUrls: ['./lockup.component.scss']
 })
 export class LockupComponent implements OnInit {
-	constructor() {}
-	columnDefs = [
-		{
-			headerName: 'Bankszámla',
-			field: 'bankaccount',
-			sortable: 'true',
-			filter: true
-		},
-		{ headerName: 'Típus', field: 'type', sortable: true, filter: true, resizable: true },
-		{ headerName: 'Futamidő', field: 'duration', sortable: true, filter: true, resizable: true },
-		{ headerName: 'Kamat', field: 'interest', sortable: true, filter: true, resizable: true },
-		{ headerName: 'Kezdete', field: 'start', sortable: true, filter: true, resizable: true },
-		{ headerName: 'Vége', field: 'end', sortable: true, filter: true, resizable: true },
-		{ headerName: 'Összeg', field: 'amount', sortable: true, filter: true, resizable: true },
-		{ headerName: 'Feltörés', field: 'delete', checkboxSelection: true, resizable: true }
-	];
+	public columnDefs;
+	public rowData;
+	public rowSelection;
+	public isRowSelectable;
+	public frameworkComponents;
+	public defaultColDef;
+	public gridApi;
+	public paginationPageSize;
+	public lockupsUpdate$: Observable<Lockup>;
+	public lockupsReplayed$: Observable<RxDocument<Lockup>[]>;
+	public walletsReplayed$: Observable<RxDocument<Wallet>[]>;
 
-	rowData = [
-		{
-			bankaccount: 'Bankszámla1',
-			type: 'egyszeri',
-			duration: '2',
-			interest: '2%',
-			start: '2019-02-01',
-			end: '2019-04-01',
-			amount: '200000'
-		},
-		{
-			bankaccount: 'Bankszámla1',
-			type: 'egyszeri',
-			duration: '2',
-			interest: '3%',
-			start: '2019-02-01',
-			end: '2019-04-01',
-			amount: '200000'
-		}
-	];
+	constructor(private databaseService: DatabaseService, private lockupPageComponent: LockupPageComponent) {
+		this.lockupsUpdate$ = databaseService.lockupsUpdates$.pipe(map(up => up.data.v));
+		this.walletsReplayed$ = databaseService.walletsReplayed$;
+		this.lockupsReplayed$ = databaseService.lockupsReplayed$;
+		this.frameworkComponents = {
+			breakupRenderer: LockupBreakupRendererComponent
+		};
+
+		this.columnDefs = [
+			{
+				headerName: 'Megnevezés',
+				field: 'name'
+			},
+			{
+				headerName: 'Tárca',
+				field: 'walletRef'
+			},
+			{ headerName: 'Kezdete', field: 'start', valueFormatter: this.dateFormatter },
+			{ headerName: 'Vége', field: 'end', valueFormatter: this.dateFormatter, sort: 'desc' },
+			{
+				headerName: 'Kamat',
+				field: 'interest',
+				valueFormatter: this.interestFormatter,
+				cellStyle: { 'text-align': 'right' }
+			},
+			{
+				headerName: 'Összeg',
+				valueFormatter: this.amountFormatter,
+				field: 'amount',
+				cellStyle: { 'text-align': 'right' }
+			},
+			{ headerName: 'Státusz', field: 'status' },
+			{ headerName: 'Feltörés', field: 'breakUp', filter: false, cellRenderer: 'breakupRenderer' }
+		];
+		this.paginationPageSize = 10;
+		this.defaultColDef = { sortable: true, resizable: true, lockVisible: true, lockPosition: true, filter: true };
+		this.rowSelection = 'single';
+
+		this.isRowSelectable = function(rowNode) {
+			return rowNode.data ? rowNode.data.status !== 'Feltörve' && rowNode.data.name !== 'Teljesítve' : false;
+		};
+
+		combineLatest([this.walletsReplayed$, this.lockupsReplayed$])
+			.pipe(
+				map(([wallets, lockups]) => {
+					return lockups
+						.map(l => l.toJSON())
+						.map(l => {
+							const wallet = wallets.find(w => w.id === l.walletRef);
+							if (wallet) {
+								l.walletRef = wallet.name;
+							} else {
+								l.walletRef = 'Készpénz';
+							}
+							return l;
+						});
+				})
+			)
+			.subscribe(lockups => {
+				this.rowData = lockups;
+			});
+	}
 
 	ngOnInit() {}
+
+	amountFormatter(params) {
+		return (
+			Math.floor(params.value)
+				.toString()
+				.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' Ft'
+		);
+	}
+
+	interestFormatter(params) {
+		return params.value.toString() + '%';
+	}
+
+	dateFormatter(params) {
+		return moment.unix(params.value).format('YYYY-MM-DD');
+	}
+
 	onGridSizeChanged(params: GridEvent): void {
 		params.api.sizeColumnsToFit();
 	}
 
 	onSelectionChanged(params: GridEvent): void {
 		const selectedRows = params.api.getSelectedRows();
-		console.log(selectedRows);
-		let selectedRowsString = '';
-		selectedRows.forEach(function(selectedRow, index) {
-			if (index !== 0) {
-				selectedRowsString += ', ';
-			}
-			selectedRowsString += selectedRow.athlete;
-		});
-		// document.querySelector('#selectedRows').innerHTML = selectedRowsString;
+		const selectedLockup = selectedRows.pop();
+		const start = moment.unix(selectedLockup.start);
+		const end = moment.unix(selectedLockup.end);
+		const diff = end.diff(start, 'months', true);
+
+		selectedLockup.start = start.toDate();
+
+		selectedLockup.end = Math.round(diff);
+		this.databaseService.walletsReplayed$
+			.pipe(
+				map(wallets => wallets.find(wallet => wallet.name === selectedLockup.walletRef)),
+				tap(wallet => (selectedLockup.walletRef = wallet.id))
+			)
+			.subscribe();
+
+		this.lockupPageComponent.lockupForm.patchValue({ lockup: selectedLockup });
 	}
 
-	gridReady(event: GridEvent): void {}
+	gridReady(event: GridEvent): void {
+		this.lockupsUpdate$.subscribe(lockup => {
+			event.api.updateRowData({ update: [lockup] });
+		});
+	}
 }

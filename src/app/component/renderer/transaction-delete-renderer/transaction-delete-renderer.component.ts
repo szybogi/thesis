@@ -16,7 +16,7 @@ export class TransactionDeleteRendererComponent implements ICellRendererAngularC
 
 	agInit(params: any): void {
 		this.params = params;
-		if (params.data.name === 'Lekötés kezdete') {
+		if (params.data.name === 'Lekötés kezdete' || params.data.name === 'Lekötés vége') {
 			this.deletable = false;
 		}
 	}

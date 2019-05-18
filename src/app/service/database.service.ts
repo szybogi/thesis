@@ -67,6 +67,11 @@ export class DatabaseService {
 		switchMap(db => db.transaction.find().$),
 		share()
 	);
+	public lockupsUpdates$ = this.database$.pipe(
+		switchMap(db => db.lockup.update$),
+		share()
+	);
+
 	public transactionsUpdates$ = this.database$.pipe(
 		switchMap(db => db.transaction.update$),
 		share()

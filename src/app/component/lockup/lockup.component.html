@@ -2,11 +2,17 @@
 	class="ag-theme-material"
 	[suppressCellSelection]="true"
 	[accentedSort]="true"
+	[rowSelection]="rowSelection"
+	[isRowSelectable]="isRowSelectable"
 	[rowData]="rowData"
 	[columnDefs]="columnDefs"
 	[suppressNoRowsOverlay]="true"
-	rowSelection="multiple"
+	[pagination]="true"
+	[paginationPageSize]="paginationPageSize"
+	[defaultColDef]="defaultColDef"
+	[frameworkComponents]="frameworkComponents"
 	(gridSizeChanged)="onGridSizeChanged($event)"
+	(selectionChanged)="onSelectionChanged($event)"
 	(gridReady)="gridReady($event)"
 >
 </ag-grid-angular>
