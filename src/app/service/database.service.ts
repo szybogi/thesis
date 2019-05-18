@@ -12,7 +12,7 @@ import {
 import { Injectable } from '@angular/core';
 import RxDB, { RxDatabase, RxDocument } from 'rxdb';
 import * as idb from 'pouchdb-adapter-idb';
-import { from, Observable, zip, Subject, BehaviorSubject, of } from 'rxjs';
+import { from, Observable, zip, Subject, BehaviorSubject, of, combineLatest } from 'rxjs';
 import {
 	tap,
 	share,
@@ -23,12 +23,15 @@ import {
 	flatMap,
 	startWith,
 	take,
-	shareReplay
+	shareReplay,
+	filter,
+	mergeMap
 } from 'rxjs/operators';
 import * as moment from 'moment';
 import { transactionSchema, Transaction } from '../model/transaction.class';
 import { userSchema } from '../model/user.interface';
 import { lockupSchema, Lockup } from '../model/lockup.interface';
+import { Router, NavigationStart, Event as NavigationEvent } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root'
@@ -102,7 +105,7 @@ export class DatabaseService {
 		startWith('1')
 	);
 
-	public constructor() {
+	public constructor(private router: Router) {
 		this.userUpdate
 			.pipe(
 				withLatestFrom(this.database$),
@@ -112,6 +115,7 @@ export class DatabaseService {
 				console.log('User saved!!');
 				console.log(next);
 			});
+
 		this.walletSaver
 			.pipe(
 				tap(wallet => {
@@ -177,6 +181,48 @@ export class DatabaseService {
 				console.log('New transaction saved!!');
 				console.log(next);
 			});
+
+		combineLatest([
+			this.router.events.pipe(filter((event: NavigationEvent) => event instanceof NavigationStart)),
+			this.lockupsReplayed$
+		])
+			.pipe(
+				map(([routerEvent, lockups]) =>
+					lockups.filter(l => {
+						const now = moment.unix(moment.now());
+						const end = moment.unix(l.end);
+						const diff = now.diff(end, 'days', true);
+						return l.status === 'Aktív' && diff >= 0;
+					})
+				),
+				tap(log => console.log('2belemegy')),
+				flatMap(lockups => lockups),
+				mergeMap(l =>
+					from(
+						l.atomicUpdate(lock => {
+							lock.status = 'Teljesítve';
+							return lock;
+						})
+					).pipe(
+						withLatestFrom(this.transactionNextId$),
+						mergeMap(([lock, nextTransactionId]) =>
+							((lock.collection.database as any) as RxDatabase<DatabaseCollection>).transaction.upsert({
+								id: nextTransactionId,
+								name: 'Lekötés teljesítve',
+								type: 'Bevétel',
+								walletRef: lock.walletRef,
+								date: lock.end,
+								amount: lock.amount,
+								category: 'Hosszútávú befektetés',
+								subcategory: lock.name,
+								transfer: false,
+								target: ''
+							})
+						)
+					)
+				)
+			)
+			.subscribe();
 	}
 
 	private init(db: RxDatabase<DatabaseCollection>) {
@@ -186,12 +232,7 @@ export class DatabaseService {
 			individual: 'unique',
 			otherOwner: ''
 		});
-		const initUserUpsert = db.user.upsert({
-			id: '1',
-			name: 'User',
-			email: 'test@test.com'
-		});
 
-		return zip(initWalletUpsert, initUserUpsert);
+		return zip(initWalletUpsert);
 	}
 }

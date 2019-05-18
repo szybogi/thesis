@@ -94,7 +94,9 @@ export class TransactionListComponent implements OnInit {
 
 		this.isRowSelectable = function(rowNode) {
 			return rowNode.data
-				? rowNode.data.name !== 'Lekötés kezdete' && rowNode.data.name !== 'Lekötés vége'
+				? rowNode.data.name !== 'Lekötés kezdete' &&
+						rowNode.data.name !== 'Lekötés feltörés' &&
+						rowNode.data.name !== 'Lekötés teljesítve'
 				: false;
 		};
 

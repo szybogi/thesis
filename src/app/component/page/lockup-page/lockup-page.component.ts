@@ -24,12 +24,17 @@ export class LockupPageComponent implements OnInit {
 	save() {
 		const lockupToSave = this.lockupForm.value.lockup as Lockup;
 		const start = moment(lockupToSave.start).unix();
-		const end = moment(lockupToSave.start)
-			.add(lockupToSave.end, 'month')
-			.unix();
+		const end = moment(lockupToSave.start).add(lockupToSave.end, 'month');
 		lockupToSave.start = start;
-		lockupToSave.end = end;
-		lockupToSave.status = 'Aktív';
+		lockupToSave.end = end.unix();
+		const now = moment.unix(moment.now());
+		const diff = now.diff(end, 'days', true);
+		if (diff < 0) {
+			lockupToSave.status = 'Aktív';
+		} else {
+			lockupToSave.status = 'Teljesítve';
+		}
+
 		this.databaseService.lockupSaver.next(lockupToSave);
 		const lockupTransaction: Transaction = {
 			id: '',
@@ -51,6 +56,14 @@ export class LockupPageComponent implements OnInit {
 				}
 			});
 		this.databaseService.transactionSaver.next(lockupTransaction);
+		if (diff >= 0) {
+			lockupTransaction.name = 'Lekötés teljesítve';
+			lockupTransaction.type = 'Bevétel';
+			lockupTransaction.date = end.unix();
+			lockupTransaction.id = (Number(lockupTransaction.id) + 1).toString();
+			lockupTransaction.amount = lockupTransaction.amount * (lockupToSave.interest / 100 + 1);
+			this.databaseService.transactionSaver.next(lockupTransaction);
+		}
 		this.lockupForm.reset();
 	}
 }

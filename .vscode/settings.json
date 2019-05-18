@@ -2,7 +2,16 @@
 	"tslint.alwaysShowRuleFailuresAsWarnings": true,
 	"editor.formatOnSave": true,
 	"editor.autoIndent": true,
-	"editor.quickSuggestions": true,
+	"editor.tabCompletion": "off",
+	"editor.quickSuggestions": {
+		"other": true,
+		"comments": false,
+		"strings": false
+	},
+	"editor.wordBasedSuggestions": true,
+	"editor.suggest.localityBonus": true,
+	"editor.snippetSuggestions": "bottom",
+	"editor.quickSuggestionsDelay": 0,
 	"editor.tabSize": 4,
 	"prettier.useTabs": true,
 	"prettier.tabWidth": 4,

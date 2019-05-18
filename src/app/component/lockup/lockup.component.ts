@@ -3,19 +3,21 @@ import { RxDocument } from 'rxdb';
 import { DatabaseService } from 'src/app/service/database.service';
 import { LockupBreakupRendererComponent } from './../renderer/lockup-breakup-renderer/lockup-breakup-renderer.component';
 import { Lockup } from 'src/app/model/lockup.interface';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GridEvent } from 'src/app/type/ag-grid-event.type';
 import * as moment from 'moment';
-import { Observable, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, tap, filter, shareReplay } from 'rxjs/operators';
 import { Wallet } from 'src/app/model/wallet.interface';
+import { Transaction } from 'src/app/model/transaction.class';
+import { BaseDirective } from '../base-directive.class';
 
 @Component({
 	selector: 'app-lockup',
 	templateUrl: './lockup.component.html',
 	styleUrls: ['./lockup.component.scss']
 })
-export class LockupComponent implements OnInit {
+export class LockupComponent extends BaseDirective implements OnInit, OnDestroy {
 	public columnDefs;
 	public rowData;
 	public rowSelection;
@@ -27,8 +29,12 @@ export class LockupComponent implements OnInit {
 	public lockupsUpdate$: Observable<Lockup>;
 	public lockupsReplayed$: Observable<RxDocument<Lockup>[]>;
 	public walletsReplayed$: Observable<RxDocument<Wallet>[]>;
+	public transaction: Transaction[];
 
 	constructor(private databaseService: DatabaseService, private lockupPageComponent: LockupPageComponent) {
+		super();
+		// this.teardown = of().subscribe(); // search ".subscribe("
+
 		this.lockupsUpdate$ = databaseService.lockupsUpdates$.pipe(map(up => up.data.v));
 		this.walletsReplayed$ = databaseService.walletsReplayed$;
 		this.lockupsReplayed$ = databaseService.lockupsReplayed$;
@@ -135,7 +141,23 @@ export class LockupComponent implements OnInit {
 
 	gridReady(event: GridEvent): void {
 		this.lockupsUpdate$.subscribe(lockup => {
+			const now = moment.unix(moment.now());
+			const end = moment.unix(lockup.end);
+			const diff = now.diff(end, 'days', true);
+			console.log('nem megy bele');
+			if (lockup.status === 'Aktív' && diff >= 0) {
+				console.log('belemegy');
+				lockup.status = 'Teljesítve';
+			}
 			event.api.updateRowData({ update: [lockup] });
 		});
+	}
+
+	/**
+	 * Example on extending the parent ngOnDestroy
+	 */
+	public ngOnDestroy(): void {
+		super.ngOnDestroy();
+		console.log('Destroyed!');
 	}
 }

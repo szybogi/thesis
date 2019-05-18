@@ -4,6 +4,7 @@ import { DatabaseService } from 'src/app/service/database.service';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { Transaction } from 'src/app/model/transaction.class';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-lockup-breakup-renderer',
@@ -19,7 +20,7 @@ export class LockupBreakupRendererComponent implements ICellRendererAngularComp 
 
 	agInit(params: any): void {
 		this.params = params;
-		if (params.data.status === 'Feltörve') {
+		if (params.data.status === 'Feltörve' || params.data.status === 'Teljesítve') {
 			this.breakable = false;
 		}
 	}
@@ -39,13 +40,13 @@ export class LockupBreakupRendererComponent implements ICellRendererAngularComp 
 
 		const lockupTransaction: Transaction = {
 			id: '',
-			name: 'Lekötés vége',
+			name: 'Lekötés feltörés',
 			type: 'Bevétel',
 			walletRef: this.walletRef,
 			category: 'Hosszútávú befektetés',
 			subcategory: this.params.data.name,
 			amount: this.params.data.amount,
-			date: this.params.data.end,
+			date: moment.now(),
 			transfer: false,
 			target: ''
 		};
