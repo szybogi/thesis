@@ -1,12 +1,14 @@
-<form [formGroup]="yearForm">
-	<mat-form-field>
-		<mat-dialog-content>
-			<input type="number" matInput formControlName="year" placeholder="Kimutatási év" />
-		</mat-dialog-content>
-	</mat-form-field>
-	<button mat-raised-button color="primary" (click)="save()" [disabled]="!yearForm.valid">
-		Kiválasztás
-	</button>
+<form [formGroup]="yearForm" class="yearForm">
+	<div class="year">
+		<mat-form-field class="year">
+			<mat-dialog-content>
+				<input type="number" matInput formControlName="year" placeholder="Kimutatási év" />
+			</mat-dialog-content>
+		</mat-form-field>
+		<button mat-raised-button color="primary" (click)="save()" [disabled]="!yearForm.valid">
+			Kiválasztás
+		</button>
+	</div>
 </form>
 <div class="flex">
 	<div class="flex-item">
