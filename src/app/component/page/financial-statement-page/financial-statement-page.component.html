@@ -1,4 +1,4 @@
-<mat-tab-group>
-	<mat-tab label="Havi kimutatás"> Content 2 </mat-tab>
-	<mat-tab label="Éves kimutatás"> Content 3 </mat-tab>
-</mat-tab-group>
+<input matInput [matDatepicker]="picker" readonly />
+<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+<mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+<app-line-chart-component></app-line-chart-component>

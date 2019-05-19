@@ -37,6 +37,7 @@ import { UserDataComponent } from './component/dialog/user-data/user-data.compon
 import { LockupFormComponent } from './component/lockup-form/lockup-form.component';
 import { LockupBreakupRendererComponent } from './component/renderer/lockup-breakup-renderer/lockup-breakup-renderer.component';
 import { ChartsModule } from 'ng2-charts';
+import { LineChartComponentComponent } from './component/line-chart-component/line-chart-component.component';
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
 		pan: { direction: Hammer.DIRECTION_ALL },
@@ -61,7 +62,8 @@ registerLocaleData(localeHu, 'hu');
 		PaymentToBankaccountDialogComponent,
 		UserDataComponent,
 		LockupFormComponent,
-		LockupBreakupRendererComponent
+		LockupBreakupRendererComponent,
+		LineChartComponentComponent
 	],
 	imports: [
 		CommonModule,

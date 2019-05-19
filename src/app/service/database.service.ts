@@ -25,7 +25,8 @@ import {
 	take,
 	shareReplay,
 	filter,
-	mergeMap
+	mergeMap,
+	toArray
 } from 'rxjs/operators';
 import * as moment from 'moment';
 import { transactionSchema, Transaction } from '../model/transaction.class';
@@ -60,6 +61,16 @@ export class DatabaseService {
 	);
 	public transactionsReplayed$ = this.database$.pipe(
 		switchMap(db => db.transaction.find().$),
+		shareReplay(1)
+	);
+	public incomesReplayed$ = this.database$.pipe(
+		switchMap(db => db.transaction.find().$),
+		map(transactions => transactions.filter(t => t.type === 'Bevétel' && !t.transfer)),
+		shareReplay(1)
+	);
+	public spendingsReplayed$ = this.database$.pipe(
+		switchMap(db => db.transaction.find().$),
+		map(transactions => transactions.filter(t => t.type === 'Kiadás' && !t.transfer)),
 		shareReplay(1)
 	);
 	public lockupsReplayed$ = this.database$.pipe(
