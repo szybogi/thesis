@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { DatabaseService } from 'src/app/service/database.service';
-import { filter, flatMap, map, switchMap, delay, endWith, first, tap, switchMapTo } from 'rxjs/operators';
+import { filter, flatMap, map, switchMap, delay, endWith, first, tap, switchMapTo, debounceTime } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { walletSchema } from 'src/app/model/wallet.interface';
 import { createHostListener } from '@angular/compiler/src/core';
@@ -51,7 +51,7 @@ export class WalletFormComponent implements OnInit, AfterViewInit {
 								}
 							}),
 							map(res => ({ taken: true })),
-							endWith(of(undefined)),
+							endWith(undefined as {}),
 							first()
 						)
 				]

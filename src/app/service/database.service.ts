@@ -38,7 +38,7 @@ import { Router, NavigationStart, Event as NavigationEvent } from '@angular/rout
 	providedIn: 'root'
 })
 export class DatabaseService {
-	private wId = 2;
+	private wId;
 
 	public database$: Observable<RxDatabase<DatabaseCollection>> = of(RxDB.plugin(idb)).pipe(
 		switchMap(() => RxDB.create<DatabaseCollection>({ name: 'db', adapter: 'idb' })),
@@ -242,6 +242,7 @@ export class DatabaseService {
 			individual: 'unique',
 			otherOwner: ''
 		});
+		this.wId = 2;
 
 		return zip(initWalletUpsert);
 	}
