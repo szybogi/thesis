@@ -7,6 +7,7 @@ import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-line-chart-component',
@@ -14,8 +15,15 @@ import * as moment from 'moment';
 	styleUrls: ['./line-chart-component.component.scss']
 })
 export class LineChartComponentComponent implements OnInit {
-	public incomes: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	public spendings: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	public yearForm = this.fb.group({
+		year: [
+			Number(moment().format('YYYY')),
+			[Validators.required, Validators.min(1900), Validators.max(Number(moment().format('YYYY')))]
+		]
+	});
+	public year: string;
+	public incomes: number[] = [];
+	public spendings: number[] = [];
 	public lineChartData: ChartDataSets[] = [
 		{ data: this.incomes, label: 'Bevétel' },
 		{ data: this.spendings, label: 'Kiadások' }
@@ -100,10 +108,21 @@ export class LineChartComponentComponent implements OnInit {
 
 	@ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
-	constructor(private databaseService: DatabaseService) {}
+	constructor(private databaseService: DatabaseService, private fb: FormBuilder) {}
 
 	ngOnInit() {
+		this.year = moment().format('YYYY');
+		for (let i = 0; i < 12; i++) {
+			this.incomes[i] = 0;
+			this.spendings[i] = 0;
+		}
 		this.getElements();
+		for (let j = 0; j < this.lineChartData[0].data.length; j++) {
+			this.lineChartData[0].data[j] = this.incomes[j];
+			this.lineChartData[1].data[j] = this.spendings[j];
+		}
+
+		this.chart.update();
 	}
 
 	// events
@@ -121,7 +140,7 @@ export class LineChartComponentComponent implements OnInit {
 				const date = moment.unix(t.date);
 				const year = date.format('YYYY');
 				const month = date.format('M');
-				if (year === '2019') {
+				if (year === this.year) {
 					this.incomes[Number(month)] += t.amount;
 				}
 			});
@@ -131,10 +150,24 @@ export class LineChartComponentComponent implements OnInit {
 				const date = moment.unix(t.date);
 				const year = date.format('YYYY');
 				const month = date.format('M');
-				if (year === '2019') {
+				if (year === this.year) {
 					this.spendings[Number(month)] += t.amount;
 				}
 			});
 		});
+	}
+	save(): void {
+		this.year = this.yearForm.value.year.toString();
+		for (let i = 0; i < 12; i++) {
+			this.incomes[i] = 0;
+			this.spendings[i] = 0;
+		}
+		this.getElements();
+		for (let j = 0; j < this.lineChartData[0].data.length; j++) {
+			this.lineChartData[0].data[j] = this.incomes[j];
+			this.lineChartData[1].data[j] = this.spendings[j];
+		}
+
+		this.chart.update();
 	}
 }

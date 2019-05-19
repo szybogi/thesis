@@ -13,17 +13,9 @@ import { LineChartComponentComponent } from '../../line-chart-component/line-cha
 	styleUrls: ['./financial-statement-page.component.scss']
 })
 export class FinancialStatementPageComponent implements OnInit {
-	public yearForm: FormGroup;
-	constructor(private fb: FormBuilder) {}
+	constructor() {}
 
-	ngOnInit() {
-		this.yearForm = this.fb.group({
-			year: [
-				Number(moment().format('YYYY')),
-				[Validators.required, Validators.min(1900), Validators.max(Number(moment().format('YYYY')))]
-			]
-		});
-	}
+	ngOnInit() {}
 
 	save() {
 		// this.lineChart.ngOnInit();
