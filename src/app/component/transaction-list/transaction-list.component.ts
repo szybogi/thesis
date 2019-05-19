@@ -2,7 +2,6 @@ import { ColumnApi } from 'ag-grid-community';
 import { walletSchema, Wallet } from 'src/app/model/wallet.interface';
 import { DatabaseService } from 'src/app/service/database.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { TransactionService } from 'src/app/service/transaction.service';
 import { HttpClient } from '@angular/common/http';
 import { GridEvent } from 'src/app/type/ag-grid-event.type';
 import { Transaction } from 'src/app/model/transaction.class';
