@@ -27,7 +27,7 @@ export class LockupPageComponent implements OnInit {
 		const end = moment(lockupToSave.start).add(lockupToSave.end, 'month');
 		lockupToSave.start = start;
 		lockupToSave.end = end.unix();
-		const now = moment.unix(moment.now());
+		const now = moment();
 		const diff = now.diff(end, 'days', true);
 		if (diff < 0) {
 			lockupToSave.status = 'Aktív';

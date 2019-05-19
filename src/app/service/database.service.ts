@@ -200,7 +200,7 @@ export class DatabaseService {
 			.pipe(
 				map(([routerEvent, lockups]) =>
 					lockups.filter(l => {
-						const now = moment.unix(moment.now());
+						const now = moment();
 						const end = moment.unix(l.end);
 						const diff = now.diff(end, 'days', true);
 						return l.status === 'Aktív' && diff >= 0;

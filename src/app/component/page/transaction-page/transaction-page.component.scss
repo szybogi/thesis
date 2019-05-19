@@ -5,3 +5,6 @@
 	min-width: 40rem;
 	width: 70%;
 }
+::ng-deep.snackbar {
+	background-color: red;
+}

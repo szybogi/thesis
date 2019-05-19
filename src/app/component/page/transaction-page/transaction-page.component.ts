@@ -10,7 +10,8 @@ import * as moment from 'moment';
 import { RxDocument } from 'rxdb';
 import { Wallet } from 'src/app/model/wallet.interface';
 import { WalletService } from 'src/app/service/wallet.service';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
 	selector: 'app-transaction-list-page',
@@ -19,8 +20,10 @@ import { map } from 'rxjs/operators';
 })
 export class TransactionPageComponent implements OnInit {
 	public transactions$: Observable<Transaction[]>;
+	public walletAmount: number;
 
 	constructor(
+		private snackBar: MatSnackBar,
 		private databaseService: DatabaseService,
 		private formBuilder: FormBuilder,
 		public walletService: WalletService
@@ -43,9 +46,20 @@ export class TransactionPageComponent implements OnInit {
 		transactionToSave.date = moment(this.transactionForm.value.transaction.date).unix();
 		transactionToSave.target = '';
 		transactionToSave.transfer = false;
-		// this.walletsWithTransactions$ = this.walletService.walletWithTransactions(transactionToSave.walletRef);
-		// console.log(this.walletsWithTransactions$);
-		// this.walletService.sum(this.walletWithTransaction.trannsactions)
+
+		this.databaseService.transactionsReplayed$
+			.pipe(map(t => t.filter(t => t.walletRef === transactionToSave.walletRef)))
+			.subscribe(t => {
+				this.walletAmount = this.walletService.sum(t);
+			});
+
+		if (this.walletAmount < transactionToSave.amount && transactionToSave.type === 'Kiadás') {
+			this.snackBar.open('Az átutaló tárca egyenlege negatív lett!', '', {
+				duration: 5000,
+				panelClass: ['snackbar']
+			});
+		}
+
 		this.databaseService.transactionSaver.next(transactionToSave);
 		this.transactionForm.reset();
 	}
