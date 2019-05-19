@@ -1,7 +1,6 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DataModel } from 'src/app/data/data.model';
 import { HttpClient } from '@angular/common/http';
 import { find, take, map, tap, flatMap, toArray, mapTo } from 'rxjs/operators';
 import * as moment from 'moment';
