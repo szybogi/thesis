@@ -1,11 +1,11 @@
 import { DatabaseService } from 'src/app/service/database.service';
 import { UserDataComponent } from './../dialog/user-data/user-data.component';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { User } from 'src/app/model/user.interface';
 import { Observable } from 'rxjs';
 import { RxDocument } from 'rxdb';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, first } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-menu',
@@ -14,6 +14,7 @@ import { map, filter } from 'rxjs/operators';
 })
 export class MenuComponent implements OnInit {
 	public owner: Observable<String>;
+	public first = true;
 
 	constructor(
 		public dialog: MatDialog,
@@ -35,6 +36,10 @@ export class MenuComponent implements OnInit {
 	}
 
 	public openCashDialog() {
+		const dialogConfig = new MatDialogConfig();
+		dialogConfig.data = {
+			first: this.first
+		};
 		const dialogRef = this.dialog.open(UserDataComponent);
 		const user: User = {
 			id: '1',
@@ -45,10 +50,10 @@ export class MenuComponent implements OnInit {
 		dialogRef.afterClosed().subscribe(result => {
 			if (result !== undefined) {
 				user.name = result.name;
-				user.email = result.email;
 				this.databaseService.userUpdate.next(user);
 				this.changeDetector.markForCheck();
 			}
+			this.first = false;
 		});
 	}
 }

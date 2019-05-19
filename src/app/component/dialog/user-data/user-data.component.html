@@ -1,9 +1,8 @@
 <h2 mat-dialog-title>Felhasználói adatok</h2>
 <mat-dialog-content [formGroup]="dialogForm">
 	<input type="text" matInput formControlName="name" placeholder="Felhasználó név" />
-	<input type="text" matInput formControlName="email" placeholder="Email cím" />
 </mat-dialog-content>
 <mat-dialog-actions>
 	<button mat-raised-button color="primary" (click)="save()" [disabled]="!dialogForm.valid">Mentés</button>
-	<button mat-button (click)="close()">Mégsem</button>
+	<button mat-button (click)="close()" *ngIf="!first">Mégsem</button>
 </mat-dialog-actions>
