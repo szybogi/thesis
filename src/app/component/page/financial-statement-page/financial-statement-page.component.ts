@@ -1,9 +1,11 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataModel } from 'src/app/data/data.model';
 import { HttpClient } from '@angular/common/http';
 import { find, take, map, tap, flatMap, toArray, mapTo } from 'rxjs/operators';
 import * as moment from 'moment';
+import { LineChartComponentComponent } from '../../line-chart-component/line-chart-component.component';
 
 @Component({
 	selector: 'app-financial-statement-page',
@@ -11,12 +13,19 @@ import * as moment from 'moment';
 	styleUrls: ['./financial-statement-page.component.scss']
 })
 export class FinancialStatementPageComponent implements OnInit {
-	public data: Observable<DataModel>;
-	public startDate = moment.unix(moment.now()).year();
+	public yearForm: FormGroup;
+	constructor(private fb: FormBuilder) {}
 
-	constructor(private http: HttpClient) {
-		this.data = this.http.get<DataModel>('./assets/data.json');
+	ngOnInit() {
+		this.yearForm = this.fb.group({
+			year: [
+				Number(moment().format('YYYY')),
+				[Validators.required, Validators.min(1900), Validators.max(Number(moment().format('YYYY')))]
+			]
+		});
 	}
 
-	ngOnInit() {}
+	save() {
+		// this.lineChart.ngOnInit();
+	}
 }

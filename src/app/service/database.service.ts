@@ -206,7 +206,6 @@ export class DatabaseService {
 						return l.status === 'Aktív' && diff >= 0;
 					})
 				),
-				tap(log => console.log('2belemegy')),
 				flatMap(lockups => lockups),
 				mergeMap(l =>
 					from(

@@ -46,7 +46,7 @@ export class LockupBreakupRendererComponent implements ICellRendererAngularComp 
 			category: 'Hosszútávú befektetés',
 			subcategory: this.params.data.name,
 			amount: this.params.data.amount,
-			date: moment.now(),
+			date: moment().unix(),
 			transfer: false,
 			target: ''
 		};

@@ -1,4 +1,12 @@
-<input matInput [matDatepicker]="picker" readonly />
-<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-<mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+<form [formGroup]="yearForm" (submit)="save()">
+	<mat-form-field>
+		<mat-dialog-content>
+			<input type="number" matInput formControlName="year" placeholder="Kimutatási év" />
+		</mat-dialog-content>
+	</mat-form-field>
+	<button mat-raised-button color="primary" type="submit" [disabled]="!yearForm.valid">
+		Kiválasztás
+	</button>
+</form>
+
 <app-line-chart-component></app-line-chart-component>

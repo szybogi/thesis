@@ -4,7 +4,6 @@ import { RxJsonSchema } from 'rxdb';
 export interface User {
 	id: string;
 	name: string;
-	email: string;
 }
 
 export const userSchema: RxJsonSchema = {
@@ -19,9 +18,6 @@ export const userSchema: RxJsonSchema = {
 			primary: true
 		},
 		name: {
-			type: 'string'
-		},
-		email: {
 			type: 'string'
 		}
 	}

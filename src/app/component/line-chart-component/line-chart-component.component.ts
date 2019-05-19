@@ -1,3 +1,4 @@
+import { FinancialStatementPageComponent } from './../page/financial-statement-page/financial-statement-page.component';
 import { DatabaseService } from './../../service/database.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
@@ -5,6 +6,7 @@ import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'app-line-chart-component',
@@ -12,25 +14,25 @@ import { map } from 'rxjs/operators';
 	styleUrls: ['./line-chart-component.component.scss']
 })
 export class LineChartComponentComponent implements OnInit {
-	public incomes: number[] = [];
-	public spendings: number[] = [];
+	public incomes: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	public spendings: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	public lineChartData: ChartDataSets[] = [
 		{ data: this.incomes, label: 'Bevétel' },
 		{ data: this.spendings, label: 'Kiadások' }
 	];
 	public lineChartLabels: Label[] = [
-		'Január',
-		'Február',
-		'Március',
-		'Április',
-		'Május',
-		'Június',
-		'Július',
-		'Augusztus',
-		'Szeptember',
-		'Október',
-		'November',
-		'December'
+		'Jan',
+		'Febr',
+		'Márc',
+		'Ápr',
+		'Máj',
+		'Jún',
+		'Júl',
+		'Aug',
+		'Szept',
+		'Okt',
+		'Nov',
+		'Dec'
 	];
 	public lineChartOptions: ChartOptions & { annotation: any } = {
 		responsive: true,
@@ -116,12 +118,22 @@ export class LineChartComponentComponent implements OnInit {
 	public getElements() {
 		this.databaseService.incomesReplayed$.pipe().subscribe(transactions => {
 			transactions.forEach(t => {
-				this.incomes.push(t.amount);
+				const date = moment.unix(t.date);
+				const year = date.format('YYYY');
+				const month = date.format('M');
+				if (year === '2019') {
+					this.incomes[Number(month)] += t.amount;
+				}
 			});
 		});
 		this.databaseService.spendingsReplayed$.pipe().subscribe(transactions => {
 			transactions.forEach(t => {
-				this.spendings.push(t.amount);
+				const date = moment.unix(t.date);
+				const year = date.format('YYYY');
+				const month = date.format('M');
+				if (year === '2019') {
+					this.spendings[Number(month)] += t.amount;
+				}
 			});
 		});
 	}

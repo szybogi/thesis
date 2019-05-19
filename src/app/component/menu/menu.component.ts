@@ -38,8 +38,7 @@ export class MenuComponent implements OnInit {
 		const dialogRef = this.dialog.open(UserDataComponent);
 		const user: User = {
 			id: '1',
-			name: '',
-			email: ''
+			name: ''
 		};
 
 		dialogRef.afterClosed().subscribe(result => {

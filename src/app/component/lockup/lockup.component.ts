@@ -146,7 +146,6 @@ export class LockupComponent extends BaseDirective implements OnInit, OnDestroy 
 			const diff = now.diff(end, 'days', true);
 			console.log('nem megy bele');
 			if (lockup.status === 'Aktív' && diff >= 0) {
-				console.log('belemegy');
 				lockup.status = 'Teljesítve';
 			}
 			event.api.updateRowData({ update: [lockup] });
