@@ -14,7 +14,6 @@ import { map, filter, first } from 'rxjs/operators';
 })
 export class MenuComponent implements OnInit {
 	public owner: Observable<String>;
-	public first = true;
 
 	constructor(
 		public dialog: MatDialog,
@@ -36,10 +35,6 @@ export class MenuComponent implements OnInit {
 	}
 
 	public openCashDialog() {
-		const dialogConfig = new MatDialogConfig();
-		dialogConfig.data = {
-			first: this.first
-		};
 		const dialogRef = this.dialog.open(UserDataComponent);
 		const user: User = {
 			id: '1',
@@ -53,7 +48,6 @@ export class MenuComponent implements OnInit {
 				this.databaseService.userUpdate.next(user);
 				this.changeDetector.markForCheck();
 			}
-			this.first = false;
 		});
 	}
 }

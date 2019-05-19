@@ -16,8 +16,8 @@
 	},
 	"scripts": {
 		"ng": "ng",
-		"start": "ng serve --sourceMap=true --base-href=\"thesis\"",
-		"build": "ng build --prod",
+		"start": "ng serve --sourceMap=true",
+		"build": "ng build --prod --base-href=\"thesis\"",
 		"start:prod": "http-server ./dist/ -c-1 -o http://127.0.0.1:8080/thesis",
 		"test": "ng test",
 		"lint": "ng lint",

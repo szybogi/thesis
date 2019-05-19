@@ -21,6 +21,11 @@ export class UserDataComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+		this.databaseService.user$.pipe().subscribe(user => {
+			if (user !== null) {
+				this.first = false;
+			}
+		});
 		this.dialogForm = this.fb.group({
 			name: ['', [Validators.required]]
 		});
