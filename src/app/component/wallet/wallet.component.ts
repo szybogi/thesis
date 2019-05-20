@@ -75,7 +75,8 @@ export class WalletComponent implements OnInit {
 		);
 	}
 
-	public openCashDialog() {
+	public openCashDialog($event) {
+		$event.stopPropagation();
 		const dialogConfig = new MatDialogConfig();
 		dialogConfig.data = {
 			id: this.walletWithTransaction.wallet.id
