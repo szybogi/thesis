@@ -71,17 +71,12 @@ export class WalletFormComponent implements OnInit, AfterViewInit {
 				'',
 				[
 					ctrl => {
-						console.log(this.wallet);
 						if (this.wallet !== undefined && this.wallet.controls.individual) {
-							console.log(this.wallet.controls.individual.value);
-							console.log(ctrl.value);
 							const res =
 								!this.wallet.controls.individual.value ||
 								(this.wallet.controls.individual.value === 'common' && !ctrl.value)
 									? { required: true }
 									: undefined;
-							// this.cd.markForCheck();
-
 							return res;
 						} else {
 							return undefined;
