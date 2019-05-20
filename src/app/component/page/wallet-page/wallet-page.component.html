@@ -2,7 +2,6 @@
 	<app-wallet-form #walletFormComponent [parent]="walletForm"></app-wallet-form>
 </form>
 <!-- {{ walletForm.value | json }}  -->
-{{ walletForm.value | json }}
 <app-wallet
 	*ngFor="let walletWithTransaction of walletsWithTransactions$ | async"
 	[walletWithTransaction]="walletWithTransaction"

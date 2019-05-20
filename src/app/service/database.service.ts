@@ -90,10 +90,17 @@ export class DatabaseService {
 		switchMap(db => db.transaction.update$),
 		share()
 	);
-	public wallets$ = this.database$.pipe(
-		switchMap(db => db.wallet.find().$),
-		share()
-	);
+	public wallets$ = this.database$.pipe(switchMap(db => db.wallet.find().$)).subscribe(w => {
+		w.forEach(w => {
+			if (this.wId === undefined) {
+				this.wId = 2;
+			}
+			if (Number(w.id) > this.wId) {
+				this.wId = Number(w.id) + 1;
+				console.log(this.wId);
+			}
+		});
+	});
 	public user$ = this.database$.pipe(
 		switchMap(db => db.user.findOne({ id: '1' }).$),
 		shareReplay(1)
@@ -242,7 +249,6 @@ export class DatabaseService {
 			individual: 'unique',
 			otherOwner: ''
 		});
-		this.wId = 2;
 
 		return zip(initWalletUpsert);
 	}
