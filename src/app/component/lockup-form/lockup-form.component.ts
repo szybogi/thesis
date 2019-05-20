@@ -11,6 +11,7 @@ import { Wallet } from 'src/app/model/wallet.interface';
 })
 export class LockupFormComponent implements OnInit {
 	public wallets$: Observable<Wallet[]>;
+	public maxDate = new Date();
 	lockup = this.formBuilder.group({
 		id: ['', []],
 		name: ['', [Validators.required]],

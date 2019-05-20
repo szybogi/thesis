@@ -31,6 +31,7 @@ export const _filter = (opt: string[], value: string): string[] => {
 })
 export class TransactionFormComponent implements OnInit {
 	public wallets$: Observable<Wallet[]>;
+	public maxDate = new Date();
 
 	transaction = this.formBuilder.group({
 		id: ['', []],

@@ -22,7 +22,13 @@
 				</mat-form-field>
 
 				<mat-form-field>
-					<input matInput [matDatepicker]="picker" placeholder="Dátum" formControlName="start" />
+					<input
+						matInput
+						[matDatepicker]="picker"
+						[max]="maxDate"
+						placeholder="Dátum"
+						formControlName="start"
+					/>
 					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 					<mat-datepicker #picker></mat-datepicker>
 				</mat-form-field>
